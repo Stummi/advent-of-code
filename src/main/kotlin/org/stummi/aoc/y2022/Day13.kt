@@ -81,9 +81,10 @@ object Day13 : AdventOfCode(2022, 13) {
         assert(stackOfList.isEmpty())
 
         fun convert(i: Any): PacketData = when (i) {
+            is IntPacket -> i
             is Int -> IntPacket(i)
-            is List<*> -> ListPacket(i.map { convert(i) })
-            else -> throw IllegalArgumentException()
+            is List<*> -> ListPacket(i.map { convert(it!!) })
+            else -> throw IllegalArgumentException(i.javaClass.toString())
         }
 
         return convert(lastClosed!!) as ListPacket
