@@ -23,40 +23,19 @@ object Day1 : AdventOfCode(2023, 1) {
         "nine" to '9',
     )
 
-    val anyNumberRegex = Regex("(${numbers.keys.joinToString("|")})")
+    val anyNumberRegex = Regex("(?=(\\d|${numbers.keys.joinToString("|")}))")
 
     override val part2: Any
         get() = input().map {
-            val firstDigit = firstDigitInString(it)
-            val lastDigit = lastDigitInString(it)
-            println("$it, $firstDigit, $lastDigit")
-            firstDigit * 10 + lastDigit
+            val finds = anyNumberRegex.findAll(it)
+
+            val firstFind = finds.first().groupValues.first { it.isNotBlank() }
+            val lastFind = finds.last().groupValues.first { it.isNotBlank() }
+
+            val first = (numbers[firstFind] ?: firstFind.first()).digitToInt()
+            val last = (numbers[lastFind] ?: lastFind.first()).digitToInt()
+            first * 10 + last
         }.sum()
-
-    private fun firstDigitInString(s: String): Int {
-        (0 until s.length).forEach {
-            if (s[it].isDigit()) {
-                return s[it].digitToInt()
-            }
-            numbers.entries.firstOrNull { (k, _) -> s.substring(it).startsWith(k) }?.let { (_, v) ->
-                return v.digitToInt()
-            }
-        }
-        throw Exception("No digit in $s")
-    }
-
-    private fun lastDigitInString(s: String): Int {
-        ((s.length - 1) downTo 0).forEach {
-            if (s[it].isDigit()) {
-                return s[it].digitToInt()
-            }
-            numbers.entries.firstOrNull { (k, _) -> s.substring(it).startsWith(k) }?.let { (_, v) ->
-                return v.digitToInt()
-            }
-        }
-        throw Exception("No digit in $s")
-    }
-
 }
 
 fun main() {
