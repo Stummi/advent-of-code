@@ -1,20 +1,33 @@
 package org.stummi.aoc.y2015
 
-import java.security.MessageDigest
+import org.stummi.aoc.AdventOfCode
+import org.stummi.aoc.helper.md5String
+
+object Day4 : AdventOfCode(2015, 4) {
+
+    override val part1: Any
+        get() = solve(5)
+
+    override val part2: Any
+        get() = solve(6)
+
+    fun solve(zeroes: Int): Int {
+        val searchPrefix = "0".repeat(zeroes)
+        val prefix = input().first()
+        var idx = 0
+        while(true) {
+            val check = md5String("$prefix$idx")
+            val searchPredix = check.startsWith(searchPrefix)
+            if(searchPredix) {
+                return idx
+            }
+            ++idx
+        }
+    }
+
+
+}
 
 fun main() {
-    val md = MessageDigest.getInstance("MD5")
-
-    val input = "ckczppom"
-    var idx = 0;
-    var zero: Byte = 0
-    var bF0: Byte = 0xF0.toByte()
-    while (true) {
-        val d = md.digest("$input$idx".toByteArray())
-        if (d[0] == zero && d[1] == zero && d[2] == zero) {
-            println("$idx")
-            break
-        }
-        ++idx
-    }
+    Day4.fancyRun()
 }
