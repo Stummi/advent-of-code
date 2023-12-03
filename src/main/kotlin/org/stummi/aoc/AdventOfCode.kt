@@ -4,7 +4,11 @@ import org.stummi.aoc.api.AocApi
 import java.io.IOException
 import java.io.InputStream
 import java.util.Random
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
+import kotlin.time.TimedValue
 import kotlin.time.measureTimedValue
 
 class InputMissingException : IOException() {}
@@ -22,6 +26,19 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
     private val samples = mutableListOf<Sample>()
     protected var currentSample: Sample? = null
     private val api = Api()
+
+    var disablePrint: Boolean = false
+
+    fun println(message: Any? = "") {
+        if (!disablePrint) {
+            kotlin.io.println(message)
+        }
+    }
+    fun print(message: Any? = "") {
+        if (!disablePrint) {
+            kotlin.io.print(message)
+        }
+    }
 
     protected inline fun <reified T> T.orSample() = (currentSample?.additionalData as? T) ?: this
 
@@ -169,22 +186,34 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
 
 fun List<AdventOfCode>.runAll() {
     println("       Day | Part 1                         | Part 2 ")
+
+    val availableCpus = Runtime.getRuntime().availableProcessors()
+    val pool = Executors.newFixedThreadPool(availableCpus)
+
+    val futures = mutableMapOf<Pair<AdventOfCode, Int>, Future<TimedValue<Result<Any>>>>()
+
+    forEach {
+        it.disablePrint = true
+        val future1 = pool.submit<TimedValue<Result<Any>>> { measureTimedValue { runCatching { it.part1 } } }
+        val future2 = pool.submit<TimedValue<Result<Any>>> { measureTimedValue { runCatching { it.part2 } } }
+        futures[it to 1] = future1
+        futures[it to 2] = future2
+    }
+
     forEach {
 //        it.input() // read input into cache so ApiAccess is nt part of timing data
         print(String.format("%10s", "${it.year}/${it.day}"))
-        val (p1, t1) = measureTimedValue { runCatching { it.part1 } }
-        val (p2, t2) = measureTimedValue { runCatching { it.part2 } }
 
-        fun printResult(p: Result<Any?>) = if (p.isSuccess) {
+        fun printResult(p: Result<Any?>, t: Duration) = if (p.isSuccess) {
             val args = p.getOrNull().toString()
-            val prettyResult = if(args.contains("\n") || args.length > 16)
+            val prettyResult = if (args.contains("\n") || args.length > 16)
                 "(...<${args.length}>)"
-             else
+            else
                 args
 
-            var time = t1.inWholeMicroseconds.toDouble()
+            var time = t.inWholeMicroseconds.toDouble()
             val timeUnit: String
-            if(time > 1e6) {
+            if (time > 1e6) {
                 time /= 1e3
                 timeUnit = "s"
             } else {
@@ -193,13 +222,19 @@ fun List<AdventOfCode>.runAll() {
 
             print(String.format(" | %16s (%8.3f %2s)", prettyResult, time / 1e3, timeUnit))
         } else {
-            print(String.format(" | %30s", if(p.exceptionOrNull() is NotImplementedError) "TODO()" else "ERROR: ${p.exceptionOrNull()?.message}".let {
-                if(it.length > 30) it.substring(0, 27) + "..." else it
-            }))
+            print(
+                String.format(
+                    " | %30s",
+                    if (p.exceptionOrNull() is NotImplementedError) "TODO()" else "ERROR: ${p.exceptionOrNull()?.message}".let {
+                        if (it.length > 30) it.substring(0, 27) + "..." else it
+                    })
+            )
         }
 
-        printResult(p1)
-        printResult(p2)
+        val (p1, t1) = futures[it to 1]!!.get()
+        printResult(p1, t1)
+        val (p2, t2) = futures[it to 2]!!.get()
+        printResult(p2, t2)
         println()
     }
 }
