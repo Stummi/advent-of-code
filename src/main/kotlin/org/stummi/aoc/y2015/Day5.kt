@@ -1,30 +1,34 @@
 package org.stummi.aoc.y2015
 
-fun main() {
-    val count = Unit.javaClass.getResourceAsStream("/2015/5.txt").use {
-        it!!.bufferedReader().readLines()
-    }.count { it.isNice2() }
+import org.stummi.aoc.AdventOfCode
 
-    println(count)
+object Day5 : AdventOfCode(2015, 5) {
+    override val part1: Any
+        get() {
+            val vowels = "aeiou".toList()
+            val forbiddenStrings = listOf("ab", "cd", "pq", "xy")
+
+            val niceRules = listOf<(String) -> Boolean>(
+                { it.count { it in vowels } >= 3 },
+                { (1 until it.length).any { idx -> it[idx - 1] == it[idx] } },
+                { forbiddenStrings.none { fs -> fs in it } }
+            )
+
+            return input().count { s -> niceRules.all { it(s) } }
+        }
+
+    override val part2: Any
+        get() {
+            val niceRules = listOf<(String) -> Boolean>(
+                { (2 until it.length).any { idx -> it.indexOf(it.substring(idx - 2, idx), idx) >= 0 } },
+                { (2 until it.length).any { idx -> it[idx - 2] == it[idx] } }
+            )
+
+            return input().count { s -> niceRules.all { it(s) } }
+        }
+
 }
 
-val vowels = "aeiou".toList()
-
-val forbiddenStrings = listOf("ab", "cd", "pq", "xy")
-
-
-fun String.isNice(): Boolean =
-    this.count { it in vowels } >= 3 &&
-            ((1 until this.length).any { idx ->
-                this[idx - 1] == this[idx]
-            }) &&
-            forbiddenStrings.none { it in this }
-
-fun String.isNice2(): Boolean =
-    ((2 until this.length).any { idx ->
-        this.indexOf(this.substring(idx - 2, idx), idx) >= 0
-    }) &&
-            ((2 until this.length).any { idx ->
-                this[idx - 2] == this[idx]
-            })
-
+fun main() {
+    Day5.fancyRun()
+}
