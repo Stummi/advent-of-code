@@ -1,32 +1,34 @@
 package org.stummi.aoc.y2015
 
-fun main() {
-    var santas = 2
+import org.stummi.aoc.AdventOfCode
+import org.stummi.aoc.helper.XY
 
-    var houses = mutableMapOf(
-        Pair(0, 0) to santas
-    )
+object Day3 : AdventOfCode(2015, 3) {
+    override val part1: Int
+        get() = solve(1)
 
-    var santaPositions = generateSequence { 0 to 0 }.take(santas).toMutableList()
+    override val part2: Int
+        get() = solve(2)
 
-    val input = Unit.javaClass.getResourceAsStream("/2015/3.txt")!!.use {
-        it.readAllBytes().map { it.toInt().toChar() }
-    }.forEachIndexed { santaId, it ->
-        var (xPos, yPos) = santaPositions[santaId % santas]
-
-        when (it) {
-            '>' -> ++xPos
-            '<' -> --xPos
-            '^' -> --yPos
-            'v' -> ++yPos
-            else -> throw IllegalStateException()
+    fun solve(santas: Int): Int {
+        val houses = mutableMapOf(XY.ZERO to santas)
+        val santaPositions = generateSequence { XY.ZERO }.take(santas).toMutableList()
+        input().first().forEachIndexed { santaId, it ->
+            val pos = santaPositions[santaId % santas]
+            val newPos = when (it) {
+                '>' -> pos.right
+                '<' -> pos.left
+                '^' -> pos.up
+                'v' -> pos.down
+                else -> throw IllegalStateException()
+            }
+            santaPositions[santaId % santas] = newPos
+            houses[newPos] = (houses[newPos] ?: 0) + 1
         }
-
-        val newPos = xPos to yPos
-        santaPositions[santaId % santas] = newPos
-
-        houses[newPos] = (houses[newPos] ?: 0) + 1
+        return houses.count()
     }
+}
 
-    println(houses.count())
+fun main() {
+    Day3.fancyRun()
 }
