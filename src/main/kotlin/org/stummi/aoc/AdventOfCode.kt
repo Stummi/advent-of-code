@@ -166,3 +166,40 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         printPart(2, null) { part2 }
     }
 }
+
+fun List<AdventOfCode>.runAll() {
+    println("       Day | Part 1                         | Part 2 ")
+    forEach {
+//        it.input() // read input into cache so ApiAccess is nt part of timing data
+        print(String.format("%10s", "${it.year}/${it.day}"))
+        val (p1, t1) = measureTimedValue { runCatching { it.part1 } }
+        val (p2, t2) = measureTimedValue { runCatching { it.part2 } }
+
+        fun printResult(p: Result<Any?>) = if (p.isSuccess) {
+            val args = p.getOrNull().toString()
+            val prettyResult = if(args.contains("\n") || args.length > 16)
+                "(...<${args.length}>)"
+             else
+                args
+
+            var time = t1.inWholeMicroseconds.toDouble()
+            val timeUnit: String
+            if(time > 1e6) {
+                time /= 1e3
+                timeUnit = "s"
+            } else {
+                timeUnit = "ms"
+            }
+
+            print(String.format(" | %16s (%8.3f %2s)", prettyResult, time / 1e3, timeUnit))
+        } else {
+            print(String.format(" | %30s", if(p.exceptionOrNull() is NotImplementedError) "TODO()" else "ERROR: ${p.exceptionOrNull()?.message}".let {
+                if(it.length > 30) it.substring(0, 27) + "..." else it
+            }))
+        }
+
+        printResult(p1)
+        printResult(p2)
+        println()
+    }
+}

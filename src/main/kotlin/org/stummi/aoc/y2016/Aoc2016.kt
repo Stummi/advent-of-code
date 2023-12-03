@@ -1,5 +1,7 @@
 package org.stummi.aoc.y2016
 
+import org.stummi.aoc.runAll
+
 val aoc2016 = listOf(
     Day1,
     Day2,
@@ -27,3 +29,7 @@ val aoc2016 = listOf(
     Day24,
     Day25,
 )
+
+fun main() {
+    aoc2016.runAll()
+}
