@@ -1,9 +1,24 @@
 package org.stummi.aoc.y2015
 
-fun main() {
-    val map = Unit.javaClass.getResourceAsStream("/2015/13.txt").use {
-        it!!.bufferedReader().readLines()
-    }.map {
+import org.stummi.aoc.AdventOfCode
+import org.stummi.aoc.helper.allPermutations
+
+object Day13: AdventOfCode(2015, 13) {
+    override val part1: Any
+        get() = parseInput().let { map ->
+            map.keys.map { it.first }.distinct().allPermutations().map {
+                calulcateHappiness(it, map)
+            }.max()
+        }
+
+    override val part2: Any
+        get() = parseInput().let { map ->
+            map.keys.map { it.first }.distinct().allPermutations().map {
+                calulcateHappiness(it + "myself", map)
+            }.max()
+        }
+
+    private fun parseInput() = input().map {
         it.split(" ")
     }.associate {
         val p1 = it[0]
@@ -17,24 +32,20 @@ fun main() {
         (p1 to p2) to points
     }
 
-    val names = map.keys.map { it.first }.distinct()
+    private fun calulcateHappiness(seating: List<String>, map: Map<Pair<String, String>, Int>): Int {
+        return (0 until seating.size).map {
+            val p = seating[it]
+            listOf(
+                seating[(it + 1) % seating.size],
+                seating[(it + seating.size - 1) % seating.size]
+            ).sumOf {
+                map[p to it] ?: 0
+            }
+        }.sum()
 
-    generatePermutations(names + listOf("myself")).map {
-        calulcateHappiness(it, map)
-    }.maxOrNull().let {
-        println(it)
     }
 }
 
-fun calulcateHappiness(seating: List<String>, map: Map<Pair<String, String>, Int>): Int {
-    return (0 until seating.size).map {
-        var p = seating[it]
-        listOf(
-            seating[(it + 1) % seating.size],
-            seating[(it + seating.size - 1) % seating.size]
-        ).sumOf {
-            map[p to it] ?: 0
-        }
-    }.sum()
-
+fun main() {
+    Day13.fancyRun()
 }

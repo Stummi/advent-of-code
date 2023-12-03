@@ -1,32 +1,50 @@
 package org.stummi.aoc.y2015
 
-fun main() {
-    val input = "1113222113"
+import org.stummi.aoc.AdventOfCode
 
-    var c = StringBuilder(input);
-    repeat(50) {
-        c = lookAndSay(c)
-        println("$it -> ${c.length}")
-    }
-
-    println(c.length)
-}
-
-fun lookAndSay(input: StringBuilder): StringBuilder {
-    var currentChar = input[0]
-    var currentCount = 1
-
-    var ret = StringBuilder()
-
-    input.drop(1).forEach {
-        if (it == currentChar) {
-            ++currentCount
-        } else {
-            ret.append(currentCount).append(currentChar.digitToInt())
-            currentChar = it
-            currentCount = 1
+object Day10 : AdventOfCode(2015, 10) {
+    override val part1: Any get() {
+        var inp = StringBuilder(input().first())
+        repeat(40) {
+           inp = lookAndSay(inp)
         }
+
+        return inp.length
     }
-    ret.append(currentCount).append(currentChar.digitToInt())
-    return ret;
+
+    override val part2: Any get() {
+        var inp = StringBuilder(input().first())
+        repeat(50) {
+           inp = lookAndSay(inp)
+        }
+
+        return inp.length
+    }
+
+    private fun lookAndSay(input: StringBuilder): StringBuilder {
+        var currentChar = input[0]
+        var currentCount = 1
+
+        val ret = StringBuilder()
+
+        input.drop(1).forEach {
+            if (it == currentChar) {
+                ++currentCount
+            } else {
+                ret.append(currentCount).append(currentChar.digitToInt())
+                currentChar = it
+                currentCount = 1
+            }
+        }
+        ret.append(currentCount).append(currentChar.digitToInt())
+        return ret;
+    }
+
 }
+
+fun main() {
+    Day10.fancyRun()
+}
+
+
+
