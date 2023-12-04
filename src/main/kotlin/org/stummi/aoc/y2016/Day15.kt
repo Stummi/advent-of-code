@@ -36,8 +36,5 @@ object Day15 : AdventOfCode(2016, 15) {
 }
 
 fun main() {
-    //Day15.inputType = "demo"
-    println(Day15.part1)
-    println(Day15.part2)
-//
+    Day15.fancyRun()
 }

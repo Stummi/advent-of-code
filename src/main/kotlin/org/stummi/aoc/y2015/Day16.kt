@@ -1,10 +1,9 @@
 package org.stummi.aoc.y2015
 
-fun main() {
+import org.stummi.aoc.AdventOfCode
 
-    val sues = Unit.javaClass.getResourceAsStream("/2015/16.txt").use {
-        it!!.bufferedReader().readLines()
-    }.map {
+object Day16 : AdventOfCode(2015, 16) {
+    fun parsedInput() = input().map {
         it.split(" ")
     }.associate {
         val c = it.chunked(2)
@@ -15,9 +14,9 @@ fun main() {
         number to m
     }
 
-    fun eq(i: Int): (Int) -> Boolean = { it == i }
-    fun gt(i: Int): (Int) -> Boolean = { it > i }
-    fun lt(i: Int): (Int) -> Boolean = { it < i }
+    val eqOp: (Int, Int) -> Boolean = { i1, i2 -> i1 == i2 }
+    val gtOp: (Int, Int) -> Boolean = { i1, i2 -> i1 > i2 }
+    val ltOp: (Int, Int) -> Boolean = { i1, i2 -> i1 < i2 }
 
     val hints = mapOf(
         "children" to eq(3),
@@ -32,11 +31,28 @@ fun main() {
         "perfumes" to eq(1),
     )
 
-    sues.filterValues {
-        it.all { (k, v) -> hints[k]!!(v) }
-    }.forEach {
-        println(it)
-    }
+    fun eq(i: Int) = eqOp to i
+    fun gt(i: Int) = gtOp to i
+    fun lt(i: Int) = ltOp to i
+
+    override val part1: Any
+        get() = parsedInput().filter { (idx, it) ->
+            it.all { (k, v) ->
+                val (_, i) = hints[k]!!
+                v == i
+            }
+        }.keys.first()
+    override val part2: Any
+        get() = parsedInput().filter { (idx, it) ->
+                it.all { (k, v) ->
+                    val (op, i) = hints[k]!!
+                    op(v, i)
+                }
+            }.keys.first()
+
+}
 
 
+fun main() {
+    Day16.fancyRun()
 }
