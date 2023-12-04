@@ -44,11 +44,11 @@ object Day16 : AdventOfCode(2015, 16) {
         }.keys.first()
     override val part2: Any
         get() = parsedInput().filter { (idx, it) ->
-                it.all { (k, v) ->
-                    val (op, i) = hints[k]!!
-                    op(v, i)
-                }
-            }.keys.first()
+            it.all { (k, v) ->
+                val (op, i) = hints[k]!!
+                op(v, i)
+            }
+        }.keys.first()
 
 }
 

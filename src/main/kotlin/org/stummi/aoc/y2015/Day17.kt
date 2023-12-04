@@ -1,17 +1,28 @@
 package org.stummi.aoc.y2015
 
+import org.stummi.aoc.AdventOfCode
+
+object Day17 : AdventOfCode(2015, 17) {
+
+    init {
+        resourceSample("demo1", 4, 3, 25)
+    }
+
+    override val part1: Any
+        get() = solve.size
+    override val part2: Any
+        get() = solve.minOf { it.size }.let { min ->
+            solve.count { it.size == min }
+        }
+
+    val solve by lazy {
+        val containers = input().map { it.toInt() }
+        fillContainers(150.orSample(), containers)
+    }
+}
+
 fun main() {
-
-    val containers = Unit.javaClass.getResourceAsStream("/2015/17.txt").use {
-        it!!.bufferedReader().readLines()
-    }.map {
-        it.toInt()
-    }.toList()
-
-    //println(containers)
-
-    fillContainers(150, containers).groupingBy { it.size }.eachCount().minByOrNull { it.key }.let { println(it) }
-
+    Day17.fancyRun()
 }
 
 fun fillContainers(i: Int, containers: List<Int>, currentContainers: List<Int> = emptyList()): List<List<Int>> {

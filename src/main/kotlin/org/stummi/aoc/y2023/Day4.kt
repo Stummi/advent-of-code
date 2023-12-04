@@ -21,7 +21,7 @@ object Day4 : AdventOfCode(2023, 4) {
                 val amount = amountOfCards[idx]!!
                 val points = actual.count { it in winning }
                 (1..points).forEach { off ->
-                    amountOfCards.computeIfPresent(idx + off) { k,v -> v + amount }
+                    amountOfCards.computeIfPresent(idx + off) { k, v -> v + amount }
                 }
             }
             return amountOfCards.values.sum()

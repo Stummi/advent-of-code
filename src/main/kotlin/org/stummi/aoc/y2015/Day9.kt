@@ -3,7 +3,7 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.allPermutations
 
-object Day9: AdventOfCode(2015, 9) {
+object Day9 : AdventOfCode(2015, 9) {
     override val part1: Any
         get() = allDistances().minOrNull()!!
 

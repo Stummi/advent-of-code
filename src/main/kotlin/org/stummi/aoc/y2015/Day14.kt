@@ -32,17 +32,18 @@ object Day14 : AdventOfCode(2015, 14) {
 
     override val part1 get() = parsedInput().map { it.progress(2503) }.maxOrNull()!!
 
-    override val part2 get() = parsedInput().let { reindeers ->
-        val points = reindeers.associate { it.name to 0 }.toMutableMap()
-        (1..2503).forEach { s ->
-            val progMap = parsedInput().associate { it.name to it.progress(s) }
-            val max = progMap.values.maxOrNull()!!
-            progMap.filterValues { it == max }.keys.forEach {
-                points[it] = points[it]!! + 1
+    override val part2
+        get() = parsedInput().let { reindeers ->
+            val points = reindeers.associate { it.name to 0 }.toMutableMap()
+            (1..2503).forEach { s ->
+                val progMap = parsedInput().associate { it.name to it.progress(s) }
+                val max = progMap.values.maxOrNull()!!
+                progMap.filterValues { it == max }.keys.forEach {
+                    points[it] = points[it]!! + 1
+                }
             }
+            points.values.max()
         }
-        points.values.max()
-    }
 
 }
 

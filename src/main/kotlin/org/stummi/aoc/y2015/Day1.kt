@@ -3,6 +3,10 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day1 : AdventOfCode(2015, 1) {
+    init {
+        rawSample("))(((((", 3, 1)
+    }
+
     override val part1 get() = solve.first
     override val part2 get() = solve.second
 

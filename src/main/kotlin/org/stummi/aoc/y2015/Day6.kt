@@ -3,7 +3,6 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.XY
 import org.stummi.aoc.helper.XYRange
-import kotlin.math.max
 
 object Day6 : AdventOfCode(2015, 6) {
     class LightMatrix(
@@ -29,7 +28,7 @@ object Day6 : AdventOfCode(2015, 6) {
         get() {
             val matrix = LightMatrix()
             parseInput().forEach { cmd ->
-                when(cmd.cmd) {
+                when (cmd.cmd) {
                     "on" -> cmd.apply { matrix[it] = 1 }
                     "off" -> cmd.apply { matrix[it] = 0 }
                     "toggle" -> cmd.apply { matrix[it] = 1 - matrix[it] }
@@ -43,7 +42,7 @@ object Day6 : AdventOfCode(2015, 6) {
         get() {
             val matrix = LightMatrix()
             parseInput().forEach { cmd ->
-                when(cmd.cmd) {
+                when (cmd.cmd) {
                     "on" -> cmd.apply { matrix[it]++ }
                     "off" -> cmd.apply { matrix[it] = (matrix[it] - 1).coerceAtLeast(0) }
                     "toggle" -> cmd.apply { matrix[it] += 2 }

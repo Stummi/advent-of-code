@@ -3,23 +3,25 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day10 : AdventOfCode(2015, 10) {
-    override val part1: Any get() {
-        var inp = StringBuilder(input().first())
-        repeat(40) {
-           inp = lookAndSay(inp)
+    override val part1: Any
+        get() {
+            var inp = StringBuilder(input().first())
+            repeat(40) {
+                inp = lookAndSay(inp)
+            }
+
+            return inp.length
         }
 
-        return inp.length
-    }
+    override val part2: Any
+        get() {
+            var inp = StringBuilder(input().first())
+            repeat(50) {
+                inp = lookAndSay(inp)
+            }
 
-    override val part2: Any get() {
-        var inp = StringBuilder(input().first())
-        repeat(50) {
-           inp = lookAndSay(inp)
+            return inp.length
         }
-
-        return inp.length
-    }
 
     private fun lookAndSay(input: StringBuilder): StringBuilder {
         var currentChar = input[0]

@@ -24,7 +24,13 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         }
 
     private val samples = mutableListOf<Sample>()
+
     protected var currentSample: Sample? = null
+        set(value) {
+            field = value
+            localLazies.forEach { it.reset() }
+        }
+
     private val api = Api()
 
     var disablePrint: Boolean = false
@@ -34,6 +40,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
             kotlin.io.println(message)
         }
     }
+
     fun print(message: Any? = "") {
         if (!disablePrint) {
             kotlin.io.print(message)
@@ -86,11 +93,33 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         Unit.javaClass.getResourceAsStream("/$year/${day}_$name.txt")
 
     inner class Api : Input {
-        private val cachedInput by lazy { AocApi.input(year, day) }
+        private val cachedInput by kotlin.lazy { AocApi.input(year, day) }
 
         override fun read() = cachedInput
         override fun toString(): String = "(API)"
     }
+
+    val localLazies = mutableListOf<LocalLazyValue<*>>()
+
+    inner class LocalLazyValue<T>(
+        private val input: () -> T,
+        private var delegate: Lazy<T> = kotlin.lazy(input)
+    ) : Lazy<T> {
+        init {
+            localLazies.add(this)
+        }
+
+        override val value: T
+            get() = delegate.value
+
+        override fun isInitialized(): Boolean = delegate.isInitialized()
+
+        fun reset() {
+            delegate = kotlin.lazy(input)
+        }
+    }
+
+    fun <T> lazy(input: () -> T): Lazy<T> = LocalLazyValue(input)
 
     class Sample(val input: Input, val result1: Any?, val result2: Any?, val name: String, val additionalData: Any?)
 

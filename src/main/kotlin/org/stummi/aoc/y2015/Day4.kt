@@ -15,10 +15,10 @@ object Day4 : AdventOfCode(2015, 4) {
         val searchPrefix = "0".repeat(zeroes)
         val prefix = input().first()
         var idx = 0
-        while(true) {
+        while (true) {
             val check = md5String("$prefix$idx")
             val searchPredix = check.startsWith(searchPrefix)
-            if(searchPredix) {
+            if (searchPredix) {
                 return idx
             }
             ++idx

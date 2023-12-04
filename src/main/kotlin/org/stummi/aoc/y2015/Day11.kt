@@ -5,30 +5,23 @@ import org.stummi.aoc.AdventOfCode
 
 object Day11 : AdventOfCode(2015, 11) {
 
-    override val part1: String
-        get() {
-            val input = input().first()
-            val pw = input.toCharArray()
+    val solve by lazy {
+        val input = input().first()
+        val pw = input.toCharArray()
+        val (p1, p2) = generateSequence {
+            increasePassword(pw)
+            pw
+        }.filter { isValidPassword(it) }.take(2).map {
+            String(it)
+        }.toList()
+        p1 to p2
+    }
 
-            return generateSequence {
-                increasePassword(pw)
-                pw
-            }.filter { isValidPassword(it) }.first().let {
-                String(it)
-            }
-        }
+    override val part1: String
+        get() = solve.first
 
     override val part2: String
-        get() = part1.let {
-            val pw = it.toCharArray()
-            increasePassword(pw)
-            generateSequence {
-                increasePassword(pw)
-                pw
-            }.filter { isValidPassword(it) }.first().let {
-                String(it)
-            }
-        }
+        get() = solve.second
 
     private fun isValidPassword(pw: CharArray): Boolean {
         if (!((0..pw.size - 3).any {

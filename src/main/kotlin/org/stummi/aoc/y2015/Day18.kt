@@ -1,87 +1,99 @@
 package org.stummi.aoc.y2015
 
+import org.stummi.aoc.AdventOfCode
+import org.stummi.aoc.helper.XY
+import org.stummi.aoc.helper.XYRange
+import java.util.BitSet
+
+object Day18 : AdventOfCode(2015, 18) {
+    class GameOfLife(
+        val w: Int,
+        val h: Int,
+    ) {
+        private val fields: BitSet = BitSet(w * h)
+
+        operator fun get(xy: XY): Boolean {
+            return fields[xyToIdx(xy)]
+        }
+
+        operator fun set(xy: XY, value: Boolean) {
+            fields[xyToIdx(xy)] = value
+        }
+
+        fun xyToIdx(xy: XY): Int {
+            return xy.y * w + xy.x
+        }
+
+        fun step(): GameOfLife {
+            val onRules = listOf(2, 3)
+            val offRules = listOf(3)
+
+            val ret = GameOfLife(w, h)
+
+            val xyRange = XYRange(XY.ZERO, XY(w - 1, h - 1))
+            xyRange.asSequence().forEach { xy ->
+                val neighbors = xy.mooreNeighbours().filter { it in xyRange }.count { this[it] }
+                val on = this[xy]
+                val rules = if (on) onRules else offRules
+                ret[xy] = rules.contains(neighbors)
+            }
+
+            return ret
+        }
+
+        fun countLit(): Int {
+            return fields.cardinality()
+        }
+    }
+
+    fun parsedInput(): GameOfLife {
+        val lines = input()
+        val w = lines[0].length
+        val h = lines.size
+
+        val board = GameOfLife(w, h)
+
+        lines.forEachIndexed { y, row ->
+            row.forEachIndexed { x, c ->
+                when (c) {
+                    '#' -> board[XY(x, y)] = true
+                    '.' -> {}
+                    else -> throw IllegalArgumentException()
+                }
+            }
+        }
+
+        return board
+    }
+
+    override val part1: Any
+        get() = parsedInput().let { it ->
+            var board = it
+            repeat(100) {
+                board = board.step()
+            }
+            board.countLit()
+        }
+
+    override val part2: Any
+        get() = parsedInput().let { it ->
+            var board = it
+            board[XY(0, 0)] = true
+            board[XY(0, it.h - 1)] = true
+            board[XY(it.w - 1, 0)] = true
+            board[XY(it.w - 1, it.h - 1)] = true
+            repeat(100) { _ ->
+                board = board.step()
+                board[XY(0, 0)] = true
+                board[XY(0, it.h - 1)] = true
+                board[XY(it.w - 1, 0)] = true
+                board[XY(it.w - 1, it.h - 1)] = true
+            }
+            board.countLit()
+        }
+
+}
+
 fun main() {
-
-    var board = Unit.javaClass.getResourceAsStream("/2015/18.txt").use {
-        it!!.bufferedReader().readLines()
-    }.map {
-        it.map { c ->
-            when (c) {
-                '#' -> true
-                '.' -> false
-                else -> throw IllegalArgumentException()
-            }
-        }
-    }
-
-    val w = board[0].size
-    val h = board.size
-
-    board = board.mapIndexed { y, row ->
-        row.mapIndexed { x, b ->
-            ((x == 0 || x == w - 1) && (y == 0 || y == h - 1)) || b
-        }
-    }
-
-    println("=========".repeat(10))
-    printGolBoard(board)
-    println("=========".repeat(10))
-
-
-
-    repeat(100) {
-        board = golStep(board)
-    }
-    println("------")
-    printGolBoard(board)
-    println(board.map { it.count { it } }.sum())
+    Day18.fancyRun()
 }
-
-
-fun golStep(board: List<List<Boolean>>): List<List<Boolean>> {
-    val onRules = listOf(2, 3)
-    val offRules = listOf(3)
-    val h = board.size
-    val w = board[0].size
-    return (0 until h).map { y ->
-        (0 until w).map { x ->
-            if ((x == 0 || x == w - 1) && (y == 0 || y == h - 1)) {
-                true
-            } else {
-                val cnt = countNeighbors(board, x, y)
-                (board[y][x] && cnt in onRules) || (!board[y][x] && cnt in offRules)
-            }
-        }
-    }
-}
-
-fun countNeighbors(board: List<List<Boolean>>, x: Int, y: Int): Int {
-    val fy = (y - 1).coerceAtLeast(0)
-    val ty = (y + 1).coerceAtMost(board.size - 1)
-    val fx = (x - 1).coerceAtLeast(0)
-    val tx = (x + 1).coerceAtMost(board[y].size - 1)
-
-
-    return (fy..ty).flatMap { yp -> (fx..tx).map { it to yp } }.filterNot { it == x to y }
-        .count { (x, y) -> board[y][x] }
-}
-
-fun printGolBoard2(board: List<List<Int>>) {
-    board.forEach {
-        it.forEach {
-            print(it)
-        }
-        println()
-    }
-}
-
-fun printGolBoard(board: List<List<Boolean>>) {
-    board.forEach {
-        it.forEach {
-            print(if (it) '#' else '.')
-        }
-        println()
-    }
-}
-
-

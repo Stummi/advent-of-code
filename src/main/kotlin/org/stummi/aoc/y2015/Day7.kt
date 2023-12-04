@@ -52,7 +52,8 @@ object Day7 : AdventOfCode(2015, 7) {
         }
     }
 
-    data class BinOp(val leftInput: String, val op: String, val rightInput: String, override val output: String) : Gate {
+    data class BinOp(val leftInput: String, val op: String, val rightInput: String, override val output: String) :
+        Gate {
         override fun getInputs(): List<String> {
             return listOf(leftInput, rightInput)
         }

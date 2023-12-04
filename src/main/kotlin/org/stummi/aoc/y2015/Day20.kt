@@ -1,23 +1,46 @@
 package org.stummi.aoc.y2015
 
-fun main() {
-    var max_houses = 3_400_000
-    var houses = IntArray(max_houses + 1)
+import org.stummi.aoc.AdventOfCode
 
-    (1..max_houses).forEach { e ->
-        deliver(e, houses)
-    }
+object Day20 : AdventOfCode(2015, 20) {
+    val input get() = input().first().toInt()
 
-    houses.indexOfFirst { it > 34_000_000 }.let { println(it) }
+    override val part1: Int
+        get() {
+            val maxHouses = input / 10
+            val houses = IntArray(maxHouses + 1)
+            (1..maxHouses).forEach { e ->
+                (e..maxHouses step e).forEach {
+                    houses[it] += e * 10
+                }
+                if (houses[e] >= input) {
+                    return e
+                }
+            }
+            return 0
+        }
+
+    override val part2: Int
+        get() {
+            val maxHouses = input / 10
+            val houses = IntArray(maxHouses + 1)
+            (1..maxHouses).forEach { e ->
+                repeat(50) {
+                    val i = e * (it + 1)
+                    if (i < maxHouses) {
+                        houses[i] += e * 11
+                    }
+                }
+
+                if (houses[e] >= input) {
+                    return e
+                }
+            }
+            return -1
+        }
 }
 
-fun deliver(e: Int, houses: IntArray) {
-    repeat(50) {
-        val idx = e * (it + 1)
-        if (idx >= houses.size) {
-            return
-        }
-        houses[idx] += e * 11
-    }
+fun main() {
+    Day20.fancyRun()
 }
 

@@ -3,7 +3,7 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.allPermutations
 
-object Day13: AdventOfCode(2015, 13) {
+object Day13 : AdventOfCode(2015, 13) {
     override val part1: Any
         get() = parseInput().let { map ->
             map.keys.map { it.first }.distinct().allPermutations().map {

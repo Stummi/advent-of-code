@@ -1,7 +1,6 @@
 package org.stummi.aoc.y2022
 
 import org.stummi.aoc.runAll
-import org.stummi.aoc.y2017.aoc2017
 
 val aoc2022 = listOf(
     Day1,

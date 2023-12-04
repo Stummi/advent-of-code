@@ -1,67 +1,50 @@
 package org.stummi.aoc.y2015
 
+import org.stummi.aoc.AdventOfCode
 import java.math.BigInteger
 
+object Day24 : AdventOfCode(2015, 24) {
+    private fun solveForGroups(groups: Int): BigInteger {
+        val weights = Day24.input().map {
+            it.toInt()
+        }
 
-fun main() {
-    val weights = Unit.javaClass.getResourceAsStream("/2015/24.txt").use {
-        it!!.bufferedReader().readLines()
-    }.map {
-        it.toInt()
+        val weightSum = weights.sum()
+        val search = weightSum / groups
+
+        return findPossibleCombinations(search, weights.sortedDescending())
+            .groupBy { it.count() }
+            .minBy { it.key }.value
+            .minOf {
+                it.fold(BigInteger.ONE) { a, b -> a.times(b.toBigInteger()) }
+            }
     }
 
-    val weightSum = weights.sum()
-    println(weightSum)
-    val search = weightSum / 4
+    private fun findPossibleCombinations(search: Int, weights: List<Int>): Sequence<Set<Int>> {
+        if (search == 0) {
+            return sequenceOf(emptySet())
+        }
 
+        if (search < 0) {
+            return emptySequence()
+        }
 
-    val allPossibleCombinations = findPossibleCombinations(search, weights.sortedDescending())
-
-    val mapByAmount = allPossibleCombinations.groupBy { it.count() }
-
-    val mapByProduct = mapByAmount[mapByAmount.keys.minOrNull()!!]!!.groupBy {
-        it.fold(BigInteger.ONE) { a, b -> a.times(b.toBigInteger()) }
-    }
-
-    val smallestProduct = mapByProduct.keys.minOrNull()!!
-
-    //val p1 = mapByProduct[smallestProduct]!![0]
-    //println(findPossibleCombinations(search, weights - p1).count())
-    println(smallestProduct)
-
-    /*
-    val minKey = productMap.keys.minOrNull()!!
-    val p1 = productMap[minKey]!!.first()
-    val remainingWeights = weights - p1
-
-    findPossibleCombinations(search, remainingWeights).forEach {
-        println(it)
-    }
-
-    allPossibleCombinations.map {  p1 ->
-        allPossibleCombinations.filter { p2 -> p2.none { it in p1 } }.map { p2 -> p1 to p2 }
-    }.flatten().map { (p1, p2)  ->
-        allPossibleCombinations.filter { p3 -> p3.none { it in p1 || it in p2 } }
-            .map { p3 -> Triple(p1, p2, p3) }
-    }.flatten().count().let {
-        println(it)
-    }
-*/
-}
-
-fun findPossibleCombinations(search: Int, weights: List<Int>): Sequence<Set<Int>> {
-    if (search == 0) {
-        return sequenceOf(emptySet())
-    }
-
-    if (search < 0) {
-        return emptySequence()
-    }
-
-    return weights.asSequence().flatMapIndexed { widx, w ->
-        findPossibleCombinations(search - w, weights.drop(widx + 1)).map {
-            it + w
+        return weights.asSequence().flatMapIndexed { widx, w ->
+            findPossibleCombinations(search - w, weights.drop(widx + 1)).map {
+                it + w
+            }
         }
     }
+
+    override val part1: BigInteger
+        get() = solveForGroups(3)
+    override val part2: BigInteger
+        get() = solveForGroups(4)
+
 }
+
+fun main() {
+    Day24.fancyRun()
+}
+
 
