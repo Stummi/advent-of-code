@@ -24,3 +24,18 @@ fun Iterable<IntRange>.merged(): List<IntRange> {
 
     return result
 }
+
+fun <T> Iterable<T>.partitionBy(predicate: (T) -> Boolean): List<List<T>> {
+    val result = mutableListOf<MutableList<T>>()
+    var currentList = mutableListOf<T>()
+    result.add(currentList)
+    this.forEach {
+        if (predicate(it)) {
+            currentList = mutableListOf()
+            result.add(currentList)
+        } else {
+            currentList.add(it)
+        }
+    }
+    return result
+}

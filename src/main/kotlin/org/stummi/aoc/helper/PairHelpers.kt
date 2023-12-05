@@ -12,3 +12,6 @@ fun <X> Pair<X, X>.sorted(comparator: Comparator<X>) =
     else
         this.swap()
 
+fun <X, Y : Comparable<Y>> Pair<X, X>.sortedBy(func: (X) -> Y) =
+    if (func(this.first) > func(this.second)) this.swap() else this
+

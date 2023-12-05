@@ -196,8 +196,10 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
                 println("Sample: ${it.name}")
                 currentSample = it
                 input()
-                samplesPass1 = samplesPass1 and printPart(1, it.result1) { part1 }
-                samplesPass2 = samplesPass2 and printPart(2, it.result2) { part2 }
+                if (it.result1 != Unit)
+                    samplesPass1 = samplesPass1 and printPart(1, it.result1) { part1 }
+                if (it.result2 != Unit)
+                    samplesPass2 = samplesPass2 and printPart(2, it.result2) { part2 }
                 println("----")
             }
         }
