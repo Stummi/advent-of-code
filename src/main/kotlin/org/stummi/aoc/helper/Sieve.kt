@@ -2,7 +2,8 @@ package org.stummi.aoc.helper
 
 import java.util.BitSet
 
-class Sieve(private var size: Long = 128) {
+object Sieve {
+    private var size: Long = 128
     private val v: BitSet = BitSet()
 
     init {
