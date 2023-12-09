@@ -2,6 +2,9 @@ package org.stummi.aoc.helper
 
 import java.util.BitSet
 
+/**
+ * Sieve of Eratosthenes implementation
+ */
 object Sieve {
     private var size: Long = 128
     private val v: BitSet = BitSet()
