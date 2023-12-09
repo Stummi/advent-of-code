@@ -9,7 +9,7 @@ object Day9 : AdventOfCode(2023, 9) {
         get() = parsedInput.sumOf { resolveSequence(it) }
 
     override val part2: Any
-        get() = parsedInput.sumOf { resolveSequenceReversed(it) }
+        get() = parsedInput.sumOf { resolveSequence(it.reversed()) }
 
     private fun resolveSequence(line: List<Int>): Int {
         val differences = line.windowed(2).map { (a, b) -> b - a }
@@ -17,14 +17,6 @@ object Day9 : AdventOfCode(2023, 9) {
             line.last()
         else
             line.last() + resolveSequence(differences)
-    }
-
-    private fun resolveSequenceReversed(line: List<Int>): Int {
-        val differences = line.windowed(2).map { (a, b) -> b - a }
-        return if (differences.all { it == 0 })
-            line.first()
-        else
-            line.first() - resolveSequenceReversed(differences)
     }
 }
 
