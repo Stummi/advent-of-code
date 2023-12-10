@@ -1,6 +1,5 @@
 package org.stummi.aoc.y2022
 
-import Day23.replace
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.astar
 
@@ -16,175 +15,68 @@ object Day16 : AdventOfCode(2022, 16) {
         val connections: List<String>,
     )
 
-    data class Actor(
-        val name: String,
-        val lastLocation: String,
-        val nextLocation: String? = null,
-        val pathLen: Int = 0,
-        val progressInPath: Int = 0,
-    ) {
-        override fun toString(): String {
-            return if (nextLocation == null) {
-                "{$name@$lastLocation}"
-            } else {
-                "{$name@$lastLocation ==> $nextLocation: $progressInPath/$pathLen}"
-            }
-        }
+    private val parsedInput by lazy {
+        Solver(
+            input.lines.map { it.split(" ") }.map {
+                val name = it[1]
+                val flowRate = it[4].removePrefix("rate=").removeSuffix(";").toInt()
+                val connections = it.drop(9).map { it.removeSuffix(",") }
+                name to Valve(name, flowRate, connections)
+            }.toMap()
+        )
     }
 
-    data class State(
-        val actors: List<Actor>,
-        val minute: Int = 0,
-        val closedValves: Set<String> = emptySet(),
-        val currentRelease: Int = 0,
-        val accumulatedRelease: Int = 0,
-    ) {
-        private fun handleIdleActors(valveMap: ValveMap): Sequence<State>? {
-            val idleActors = actors.filter { it.nextLocation == null }
-            if (idleActors.isEmpty()) {
-                return null;
-            }
-
-            val remainingTime = 30 - minute
-            val currentGoals = actors.mapNotNull { it.nextLocation }.toSet()
-            val openValves = valveMap.allValueValves - closedValves - currentGoals
-            val possibleMovesPerActor = idleActors.map { a ->
-                openValves.filter {
-                    valveMap.distance(a.lastLocation, it) < (remainingTime)
-                }
-            }.toList()
-
-            val actorsToRemove = sequence {
-                possibleMovesPerActor.forEachIndexed { idx, moves ->
-                    if (moves.isEmpty()) {
-                        yield(idleActors[idx])
-                    }
-                }
-            }.toSet()
-
-            if (actorsToRemove.isNotEmpty()) {
-                return sequenceOf(
-                    copy(actors = actors - actorsToRemove)
-                )
-            } else {
-                val firstActor = idleActors[0]
-                val possibleMoves = possibleMovesPerActor[0]
-                return possibleMoves.asSequence().map {
-                    copy(
-                        actors =
-                        actors.replace(
-                            actors.indexOf(firstActor), firstActor.copy(
-                                nextLocation = it,
-                                pathLen = valveMap.distance(firstActor.lastLocation, it)
-                            )
-                        )
-                    )
-                }
-            }
-        }
-
-        fun handleActorsAtGoal(valveMap: ValveMap): Sequence<State>? {
-            val actorsInGoal = actors.filter { it.nextLocation != null && it.pathLen == it.progressInPath }.toSet()
-            if (actorsInGoal.isEmpty()) {
-                return null;
-            }
-
-            val newlyClosedValves = actorsInGoal.map { it.nextLocation!! }
-            val updatedActors = actorsInGoal.map {
-                Actor(
-                    name = it.name,
-                    lastLocation = it.nextLocation!!,
-                    nextLocation = null,
-                    pathLen = 0,
-                    progressInPath = 0,
-                )
-            }
-            val sumOfFlowRate = newlyClosedValves.sumOf { valveMap[it].flowRate }
-
-            return sequenceOf(
-                State(
-                    actors = (actors - actorsInGoal).map {
-                        it.copy(progressInPath = it.progressInPath + 1)
-                    } + updatedActors,
-                    minute = this.minute + 1,
-                    closedValves = closedValves + newlyClosedValves,
-                    currentRelease = currentRelease + sumOfFlowRate,
-                    accumulatedRelease = accumulatedRelease + currentRelease
-                )
-            )
-        }
-
-        fun solve(valveMap: ValveMap): List<State> {
-            if (actors.isEmpty()) {
-                return listOf(waitTillEnd())
-            } else {
-                val solved =
-                    transitions(valveMap).map { it.solve(valveMap) }.maxByOrNull { it.last().accumulatedRelease }!!
-                return listOf(this) + solved
-            }
-        }
-
-        fun transitions(valveMap: ValveMap): Sequence<State> {
-            if (actors.isEmpty()) {
-                return sequenceOf(waitTillEnd())
-            }
-
-            // Check if we have idle actors first
-            handleIdleActors(valveMap)?.let { return it }
-            handleActorsAtGoal(valveMap)?.let { return it }
-
-            val ticks = actors.minOf { (it.pathLen - it.progressInPath) }
-
-            return sequenceOf(
-                State(
-                    actors.map {
-                        it.copy(
-                            progressInPath = it.progressInPath + ticks
-                        )
-                    },
-                    minute + ticks,
-                    closedValves,
-                    currentRelease,
-                    accumulatedRelease + currentRelease * ticks
-                )
-            )
-        }
-
-        fun waitTillEnd(end: Int = 30): State {
-            if (end == minute) {
-                return this;
-            }
-            if (end < minute) {
-                throw IllegalArgumentException("cannot travel back in time: ${this}")
-            }
-
-            val timeElapse = (end - minute)
-            return State(
-                actors,
-                minute + timeElapse,
-                closedValves,
-                currentRelease,
-                accumulatedRelease + (currentRelease * timeElapse)
-            )
-        }
-    }
-
-    class ValveMap(val valves: Map<String, Valve>) {
-        val distanceCache = mutableMapOf<Pair<String, String>, Int>()
+    private class Solver(val valves: Map<String, Valve>) {
+        val pathCache = mutableMapOf<Pair<String, String>, List<String>>()
         val allValueValves = valves.values.filter { it.flowRate > 0 }.map { it.name }.toList()
 
-        fun distance(from: String, to: String): Int =
-            distanceCache.getOrPut(from to to) {
+        data class Path(
+            val visitedValves: Set<String> = emptySet(),
+            val timeLeft: Int = 30,
+            val flowRate: Int = 0,
+            val totalFlow: Int = 0,
+        ) {
+            val value = totalFlow + (flowRate * timeLeft)
+        }
+
+        fun plausiblePaths(
+            pos: String = "AA",
+            pathSoFar: Path = Path()
+        ): Sequence<Path> {
+            return sequenceOf(pathSoFar) + allValueValves.asSequence().filter {
+                it !in pathSoFar.visitedValves
+            }.map {
+                it to path(pos, it)
+            }.filter { (_, path) ->
+                path.size < pathSoFar.timeLeft
+            }.map { (goal, path) ->
+                val timeStep = path.size + 1
+                plausiblePaths(
+                    goal,
+                    Path(
+                        visitedValves = pathSoFar.visitedValves + goal,
+                        timeLeft = pathSoFar.timeLeft - timeStep,
+                        flowRate = pathSoFar.flowRate + valves[goal]!!.flowRate,
+                        totalFlow = pathSoFar.totalFlow + pathSoFar.flowRate * timeStep
+                    )
+                )
+            }.flatten()
+        }
+
+        operator fun get(to: String): Valve {
+            return valves[to]!!
+        }
+
+        fun path(from: String, to: String): List<String> {
+            pathCache[to to from]?.let { return (it.dropLast(1).reversed() + to) }
+            return pathCache.getOrPut(from to to) {
                 astar(
                     from,
                     { valves[it]!!.connections.map { it to 1 }.asSequence() },
                     { it == to },
                     { 0 }
-                ).size
+                ).map { it.first }.reversed()
             }
-
-        operator fun get(to: String): Valve {
-            return valves[to]!!
         }
 
     }
@@ -192,67 +84,25 @@ object Day16 : AdventOfCode(2022, 16) {
 
     override val part1
         get(): Int {
-            val valveMap = ValveMap(readValves().associateBy { it.name })
-            val state = State(
-                listOf(Actor("Me", "AA", null, 0, 0))
-            )
-            val solved = state.solve(valveMap)
-            println(solved.last())
-            return solved.last().accumulatedRelease
+            return parsedInput.plausiblePaths().maxOf {
+                it.value
+            }
         }
 
     override val part2: Int
-        get() {
-            val valveMap = ValveMap(readValves().associateBy { it.name })
-            var state = State(
-                listOf(
-                    Actor("Me", "AA", null, 0, 0),
-                    Actor("Elephant", "AA", null, 0, 0)
-                ),
-                minute = 4,
-            )
-            val solved = state.solve(valveMap);
-            return solved.last().accumulatedRelease
-        }
+        get(): Int {
+            val bestMap = parsedInput.plausiblePaths(pathSoFar = Solver.Path(timeLeft = 26)).groupingBy {
+                it.visitedValves
+            }.fold(0) { cur, cand -> maxOf(cur, cand.value) }
 
-    private fun applyFixedSteps(
-        state: Day16.State,
-        fixedSteps: Map<String, List<String>>,
-        valveMap: ValveMap
-    ): Day16.State {
-        return state.copy(
-            actors = state.actors.map {
-                if (it.nextLocation != null) {
-                    it
-                } else {
-                    fixedSteps[it.name]!!.let { l ->
-                        val i = l.indexOf(it.lastLocation) + 1
-                        val nextLocation = if (i >= l.size) null else l[i]
-                        it.copy(
-                            nextLocation = nextLocation,
-                            pathLen = nextLocation?.let { n -> valveMap.distance(it.lastLocation, n) } ?: 0
-
-                        )
-                    }
-                    //it
-                }
+            return bestMap.maxOf { (meVisisted, value) ->
+                value + bestMap.filterKeys {
+                    it.none { it in meVisisted }
+                }.values.max()
             }
-        )
-    }
-
-    private fun readValves(): List<Valve> {
-        return inputLines().map { it.split(" ") }.map {
-            val name = it[1]
-            val flowRate = it[4].removePrefix("rate=").removeSuffix(";").toInt()
-            val connections = it.drop(9).map { it.removeSuffix(",") }
-            Valve(name, flowRate, connections)
         }
-    }
 }
 
 fun main() {
     Day16.fancyRun()
 }
-
-// p1 1635 low
-// p1 1735 high
