@@ -30,7 +30,7 @@ object Day10 : AdventOfCode(2023, 10) {
         }
 
         fun find(char: Char): XY {
-            input().forEachIndexed { y, line ->
+            inputLines().forEachIndexed { y, line ->
                 line.indexOf(char).takeIf { it >= 0 }?.let { return XY(it, y) }
             }
             throw NoSuchElementException()
@@ -57,7 +57,7 @@ object Day10 : AdventOfCode(2023, 10) {
         'F' to (XY(0, 1) to XY(1, 0)),
     )
 
-    private val parsedInput by lazy { InputMap(input()) }
+    private val parsedInput by lazy { InputMap(inputLines()) }
 
     data class SolvedCircle(
         val startTile: Char,

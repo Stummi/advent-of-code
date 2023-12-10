@@ -18,7 +18,7 @@ object Day13 : AdventOfCode(2015, 13) {
             }.max()
         }
 
-    private fun parseInput() = input().map {
+    private fun parseInput() = inputLines().map {
         it.split(" ")
     }.associate {
         val p1 = it[0]

@@ -178,7 +178,7 @@ object Day23 : AdventOfCode(2021, 23) {
 
     val initialState: GameState
         get() {
-            val data = input()
+            val data = inputLines()
             val state = GameState()
 
             val mutableRooms = GameState().rooms.map { it.toMutableList() }

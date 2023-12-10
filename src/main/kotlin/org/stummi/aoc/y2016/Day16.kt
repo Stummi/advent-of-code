@@ -6,14 +6,14 @@ object Day16 : AdventOfCode(2016, 16) {
     override val part1: String
         get() {
             val length = if (sample) 20 else 272
-            val s = input().first()
+            val s = inputLines().first()
             return calculateSum(s, length)
         }
 
     override val part2: Any
         get() {
             val length = if (sample) 20 else 35651584
-            val s = input().first()
+            val s = inputLines().first()
             return calculateSum(s, length)
         }
 

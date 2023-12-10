@@ -35,7 +35,7 @@ object Day5 : AdventOfCode(2022, 5) {
     }
 
     private fun readState(): Pair<List<MutableList<Char>>, List<String>> {
-        val inp = input()
+        val inp = inputLines()
         val sep = inp.indexOfFirst { it.isBlank() }
         val field = inp.take(sep)
         val stacks = parseField(field)

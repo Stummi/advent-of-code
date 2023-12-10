@@ -23,7 +23,7 @@ object Day5 : AdventOfCode(2023, 5) {
     )
 
     private val parsedInput by lazy {
-        val inp = input()
+        val inp = inputLines()
         val seeds = inp.first().split(" ").drop(1).map(String::toLong)
         val maps = inp.drop(2).partitionBy { it.isBlank() }.map {
             val (from, _, to) = it.first().split(" ")[0].split("-")

@@ -126,7 +126,7 @@ object Day11 : AdventOfCode(2016, 11) {
         }
     }
 
-    fun readState() = input().map {
+    fun readState() = inputLines().map {
         Regex("(\\w+)(?:-compatible)? (microchip|generator)").findAll(it).map {
             val element = it.groupValues[1]
             val type = MachineType.valueOf(it.groupValues[2].replaceFirstChar { it.uppercase() })

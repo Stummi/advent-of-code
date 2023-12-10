@@ -10,7 +10,7 @@ object Day19 : AdventOfCode(2015, 19) {
     )
 
     private fun parsedInput(): Input {
-        val lines = input()
+        val lines = inputLines()
         val replacements = lines.dropLast(2)
             .map { it.split(" => ") }
             .map { it[0] to it[1] }

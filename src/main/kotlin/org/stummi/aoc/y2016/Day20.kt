@@ -57,7 +57,7 @@ object Day20 : AdventOfCode(2016, 20) {
          */
         }
 
-    private fun readRanges() = input().map {
+    private fun readRanges() = inputLines().map {
         it.split("-").let { it[0].toLong()..it[1].toLong() }
     }
 

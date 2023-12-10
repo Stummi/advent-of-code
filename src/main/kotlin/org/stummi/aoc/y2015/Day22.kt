@@ -124,7 +124,7 @@ object Day22 : AdventOfCode(2015, 22) {
     )
 
     private fun parseInput(): GameState {
-        val (hp, dmg) = input().map { line ->
+        val (hp, dmg) = inputLines().map { line ->
             line.split(": ")[1].toInt()
         }
         return GameState(

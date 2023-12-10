@@ -137,7 +137,7 @@ object Day22 : AdventOfCode(2021, 22) {
             return solve(inputData)
         }
 
-    val inputData = input().map {
+    val inputData = inputLines().map {
         val spl0 = it.split(" ")
         val state = spl0[0] == "on"
 

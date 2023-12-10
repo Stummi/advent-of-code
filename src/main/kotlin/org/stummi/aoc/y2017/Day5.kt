@@ -3,7 +3,7 @@ package org.stummi.aoc.y2017
 import org.stummi.aoc.AdventOfCode
 
 object Day5 : AdventOfCode(2017, 5) {
-    private val parsedInput: List<Int> get() = input().map { it.toInt() }
+    private val parsedInput: List<Int> get() = inputLines().map { it.toInt() }
 
     override val part1: Any
         get() {

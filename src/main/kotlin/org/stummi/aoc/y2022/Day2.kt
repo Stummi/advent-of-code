@@ -38,7 +38,7 @@ object Day2 : AdventOfCode(2022, 2) {
             else -> 6
         } + rnd.second.value)
 
-    private fun moves(): List<Pair<Move, Move>> = input().map {
+    private fun moves(): List<Pair<Move, Move>> = inputLines().map {
         val (a, b) = it.split(" ")
         moveMappings[a]!! to moveMappings[b]!!
     }
@@ -46,7 +46,7 @@ object Day2 : AdventOfCode(2022, 2) {
     override val part2: Any
         get() = moves2().sumOf { pointsForMove(it) }
 
-    private fun moves2(): List<Pair<Move, Move>> = input().map {
+    private fun moves2(): List<Pair<Move, Move>> = inputLines().map {
         val (a, b) = it.split(" ")
         val move = moveMappings[a]!!
         move to when (b) {

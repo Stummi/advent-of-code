@@ -77,7 +77,7 @@ object Day21 : AdventOfCode(2015, 21) {
 
 
     private fun parseInput(): Enemy {
-        val (hp, dmg, armor) = input().map { line ->
+        val (hp, dmg, armor) = inputLines().map { line ->
             line.split(": ")[1].toInt()
         }
         return Enemy(hp, dmg, armor)

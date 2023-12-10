@@ -4,7 +4,7 @@ import org.stummi.aoc.AdventOfCode
 
 object Day15 : AdventOfCode(2016, 15) {
 
-    private fun disks() = input().mapIndexed { idx, line ->
+    private fun disks() = inputLines().mapIndexed { idx, line ->
         val spl = line.split(" ")
         val positions = spl[3].toInt()
         var curPos = spl.last().removeSuffix(".").toInt()

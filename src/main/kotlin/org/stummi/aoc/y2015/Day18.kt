@@ -47,7 +47,7 @@ object Day18 : AdventOfCode(2015, 18) {
     }
 
     fun parsedInput(): GameOfLife {
-        val lines = input()
+        val lines = inputLines()
         val w = lines[0].length
         val h = lines.size
 

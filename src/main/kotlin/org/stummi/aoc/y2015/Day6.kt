@@ -53,7 +53,7 @@ object Day6 : AdventOfCode(2015, 6) {
         }
 
     private fun parseInput() =
-        input().map {
+        inputLines().map {
             it.split(" ").let { spl ->
                 if (spl.size == 4) {
                     spl

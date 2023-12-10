@@ -97,7 +97,7 @@ object Day7 : AdventOfCode(2023, 7) {
 
 
     private fun parsedInput(replaceJokers: Boolean) =
-        input().map {
+        inputLines().map {
             var (cardStr, pointStr) = it.split(" ")
 
             if (replaceJokers) {

@@ -9,13 +9,13 @@ object Day18 : AdventOfCode(2016, 18) {
 
     override val part1: Int
         get() {
-            return generateSequence(input().first()) { nextLine(it) }.take(40.orSample()).map {
+            return generateSequence(inputLines().first()) { nextLine(it) }.take(40.orSample()).map {
                 it.count { it == '.' }
             }.sum()
         }
     override val part2: Int
         get() {
-            return generateSequence(input().first()) { nextLine(it) }.take(400000).map {
+            return generateSequence(inputLines().first()) { nextLine(it) }.take(400000).map {
                 it.count { it == '.' }
             }.sum()
         }

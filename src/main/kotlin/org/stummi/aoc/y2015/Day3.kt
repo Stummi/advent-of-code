@@ -13,7 +13,7 @@ object Day3 : AdventOfCode(2015, 3) {
     fun solve(santas: Int): Int {
         val houses = mutableMapOf(XY.ZERO to santas)
         val santaPositions = generateSequence { XY.ZERO }.take(santas).toMutableList()
-        input().first().forEachIndexed { santaId, it ->
+        inputLines().first().forEachIndexed { santaId, it ->
             val pos = santaPositions[santaId % santas]
             val newPos = when (it) {
                 '>' -> pos.right

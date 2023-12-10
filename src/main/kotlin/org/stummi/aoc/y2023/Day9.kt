@@ -3,7 +3,7 @@ package org.stummi.aoc.y2023
 import org.stummi.aoc.AdventOfCode
 
 object Day9 : AdventOfCode(2023, 9) {
-    val parsedInput by lazy { input().map { it.split(" ").map(String::toInt) } }
+    val parsedInput by lazy { inputLines().map { it.split(" ").map(String::toInt) } }
 
     override val part1: Any
         get() = parsedInput.sumOf { resolveSequence(it) }

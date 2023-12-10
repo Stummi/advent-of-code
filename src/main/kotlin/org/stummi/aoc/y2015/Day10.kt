@@ -5,7 +5,7 @@ import org.stummi.aoc.AdventOfCode
 object Day10 : AdventOfCode(2015, 10) {
     override val part1: Any
         get() {
-            var inp = StringBuilder(input().first())
+            var inp = StringBuilder(inputLines().first())
             repeat(40) {
                 inp = lookAndSay(inp)
             }
@@ -15,7 +15,7 @@ object Day10 : AdventOfCode(2015, 10) {
 
     override val part2: Any
         get() {
-            var inp = StringBuilder(input().first())
+            var inp = StringBuilder(inputLines().first())
             repeat(50) {
                 inp = lookAndSay(inp)
             }

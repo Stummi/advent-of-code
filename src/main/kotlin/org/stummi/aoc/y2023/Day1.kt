@@ -4,7 +4,7 @@ import org.stummi.aoc.AdventOfCode
 
 object Day1 : AdventOfCode(2023, 1) {
     override val part1: Any
-        get() = input().map {
+        get() = inputLines().map {
             val l = it.filter { it.isDigit() }.toList()
             assert(l.size >= 2)
             l.first().digitToInt() * 10 + l.last().digitToInt()
@@ -26,7 +26,7 @@ object Day1 : AdventOfCode(2023, 1) {
     val anyNumberRegex = Regex("(?=(\\d|${numbers.keys.joinToString("|")}))")
 
     override val part2: Any
-        get() = input().map {
+        get() = inputLines().map {
             val finds = anyNumberRegex.findAll(it)
 
             val firstFind = finds.first().groupValues.first { it.isNotBlank() }

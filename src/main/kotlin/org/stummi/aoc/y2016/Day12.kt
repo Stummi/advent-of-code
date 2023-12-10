@@ -7,7 +7,7 @@ object Day12 : AdventOfCode(2016, 12) {
     override val part2 get() = evaluate { this["c"] = 1 }
 
     fun evaluate(init: MutableMap<String, Int>.() -> Unit = {}): Any {
-        val code = input().map { it.split(" ") }
+        val code = inputLines().map { it.split(" ") }
         var cptr = 0
         val registers = mutableMapOf("a" to 0, "b" to 0, "c" to 0, "d" to 0)
         init(registers)

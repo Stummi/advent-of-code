@@ -7,7 +7,7 @@ import org.stummi.aoc.helper.astar
 object Day13 : AdventOfCode(2016, 13) {
     override val part1: Any
         get() {
-            val fav = input().first().toInt()
+            val fav = inputLines().first().toInt()
             val goal = if (sample) XY(7, 4) else XY(31, 39)
             val path = astar(
                 XY(1, 1),
@@ -51,7 +51,7 @@ object Day13 : AdventOfCode(2016, 13) {
 
     override val part2: Any
         get() {
-            val fav = input().first().toInt()
+            val fav = inputLines().first().toInt()
             val currentLocations = mutableSetOf(XY(1, 1))
             val allLocations = mutableSetOf(XY(1, 1))
             repeat(50) {

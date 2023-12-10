@@ -31,7 +31,7 @@ data class DigitChecker(
 
 
 fun main() {
-    val checkers = Day24.input().filterNot { it.isBlank() }.chunked(18).map {
+    val checkers = Day24.inputLines().filterNot { it.isBlank() }.chunked(18).map {
         //println(it)
         val divZ = it[4].split(" ")[2] == "26"
         val aVal = it[5].split(" ")[2].toInt()

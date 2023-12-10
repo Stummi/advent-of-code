@@ -34,7 +34,7 @@ object Day2 : AdventOfCode(2016, 2) {
     private fun solve(keyPad: IntMatrix, startPos: XY): String {
         var pos = startPos
 
-        return input().map {
+        return inputLines().map {
             it.fold(pos) { pos, c ->
                 val pos2 = when (c) {
                     'U' -> pos.move(y = -1)

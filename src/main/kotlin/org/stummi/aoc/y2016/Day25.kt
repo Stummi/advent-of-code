@@ -24,7 +24,7 @@ object Day25 : AdventOfCode(2016, 25) {
 
     override val part1: Any
         get() {
-            val code = input()
+            val code = inputLines()
 
             (0..1_000_000).forEach {
                 //print("$it: ")
@@ -46,7 +46,7 @@ object Day25 : AdventOfCode(2016, 25) {
 
 
     fun evaluate(init: MutableMap<String, Int>.() -> Unit = {}, output: (Int) -> Unit): Any {
-        val code = input().map { it.split(" ") }
+        val code = inputLines().map { it.split(" ") }
         var cptr = 0
         val registers = mutableMapOf("a" to 0, "b" to 0, "c" to 0, "d" to 0)
         init(registers)

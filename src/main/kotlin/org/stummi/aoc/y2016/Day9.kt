@@ -4,9 +4,9 @@ import org.stummi.aoc.AdventOfCode
 
 object Day9 : AdventOfCode(2016, 9) {
     override val part1: Any
-        get() = decompressedLength(input().first())
+        get() = decompressedLength(inputLines().first())
     override val part2: Any
-        get() = decompressedLength(input().first(), true)
+        get() = decompressedLength(inputLines().first(), true)
 
     fun decompressedLength(s: String, recursive: Boolean = false): Long {
         var curPos = 0;

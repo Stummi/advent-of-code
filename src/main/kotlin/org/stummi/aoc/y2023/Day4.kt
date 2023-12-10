@@ -28,7 +28,7 @@ object Day4 : AdventOfCode(2023, 4) {
         }
 
     fun parseInput() =
-        input().map {
+        inputLines().map {
             it.split(":")[1]
         }.map {
             it.split(" | ")

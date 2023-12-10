@@ -67,7 +67,7 @@ object Day15 : AdventOfCode(2022, 15) {
     }
 
     private fun readSensors() =
-        input().map {
+        inputLines().map {
             val spl = it.split(" ")
             val x1 = spl[2].removePrefix("x=").removeSuffix(",").toInt()
             val y1 = spl[3].removePrefix("y=").removeSuffix(":").toInt()

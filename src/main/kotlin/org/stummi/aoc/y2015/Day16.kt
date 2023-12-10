@@ -3,7 +3,7 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day16 : AdventOfCode(2015, 16) {
-    fun parsedInput() = input().map {
+    fun parsedInput() = inputLines().map {
         it.split(" ")
     }.associate {
         val c = it.chunked(2)

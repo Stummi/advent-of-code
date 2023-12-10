@@ -22,7 +22,7 @@ object Day1 : AdventOfCode(2016, 1) {
 
     private fun instructions(): List<Pair<Char, Int>> {
         var dir = 'N'
-        return input().first().split(", ").map {
+        return inputLines().first().split(", ").map {
             it[0] to it.substring(1).toInt()
         }.map {
             dir = dirs[(dirs.indexOf(dir) + rot[it.first]!!) % 4]

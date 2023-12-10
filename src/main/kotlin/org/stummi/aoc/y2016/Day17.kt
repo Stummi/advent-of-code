@@ -33,7 +33,7 @@ object Day17 : AdventOfCode(2016, 17) {
 
     override val part1
         get() = astar(
-            initialState = State(input().first()),
+            initialState = State(inputLines().first()),
             nextStates = { it.moves().map { it to 1 } },
             goal = { it.pos == XY(3, 3) },
             heuristicCost = { XY(3, 3).orthogonalDistanceTo(it.pos) }
@@ -41,7 +41,7 @@ object Day17 : AdventOfCode(2016, 17) {
 
     override val part2: Int
         get() {
-            val states = mutableListOf(State(input().first()))
+            val states = mutableListOf(State(inputLines().first()))
             var longestPath = 0;
             while (states.isNotEmpty()) {
                 val s = states.removeFirst()

@@ -79,7 +79,7 @@ object Day18 : AdventOfCode(2022, 18) {
 
     }
 
-    private fun readCubes() = input().map {
+    private fun readCubes() = inputLines().map {
         it.split(",").map { it.toInt() }.let { XYZ(it[0], it[1], it[2]) }
     }
 

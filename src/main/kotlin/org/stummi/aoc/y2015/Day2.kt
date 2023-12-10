@@ -3,7 +3,7 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day2 : AdventOfCode(2015, 2) {
-    val boxes get() = input().map { it.split("x").map { it.toInt() } }.map { GiftBox(it[0], it[1], it[2]) }
+    val boxes get() = inputLines().map { it.split("x").map { it.toInt() } }.map { GiftBox(it[0], it[1], it[2]) }
 
     override val part1 get() = boxes.sumOf { wrappingPaper(it) }
     override val part2 get() = boxes.sumOf { ribbon(it) }

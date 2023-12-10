@@ -5,7 +5,7 @@ import org.stummi.aoc.AdventOfCode
 object Day25 : AdventOfCode(2015, 25) {
     override val part1: Long
         get() {
-            val (row, col) = input().first().split(" ").let {
+            val (row, col) = inputLines().first().split(" ").let {
                 it[16].dropLast(1).toInt() to it[18].dropLast(1).toInt()
             }
             val idx = cellLocation(row, col)

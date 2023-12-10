@@ -5,7 +5,7 @@ import kotlin.math.min
 
 object Day13 : AdventOfCode(2022, 13) {
     override val part1
-        get() = input().chunked(3)
+        get() = inputLines().chunked(3)
             .map { parseLine(it[0]) to parseLine(it[1]) }
             .mapIndexed { idx, pair -> (idx + 1) to pair.first.compareTo(pair.second) }
             .filter { it.second == -1 }
@@ -15,7 +15,8 @@ object Day13 : AdventOfCode(2022, 13) {
         get() {
             val div1 = ListPacket(mutableListOf(ListPacket(mutableListOf(IntPacket(2)))))
             val div2 = ListPacket(mutableListOf(ListPacket(mutableListOf(IntPacket(6)))))
-            val sortedList = (input().filter { it.isNotEmpty() }.map { parseLine(it) } + listOf(div1, div2)).sorted()
+            val sortedList =
+                (inputLines().filter { it.isNotEmpty() }.map { parseLine(it) } + listOf(div1, div2)).sorted()
             return (sortedList.indexOf(div1) + 1) * (sortedList.indexOf(div2) + 1);
         }
 

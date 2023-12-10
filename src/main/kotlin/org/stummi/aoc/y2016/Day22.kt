@@ -40,7 +40,7 @@ object Day22 : AdventOfCode(2016, 22) {
     // 26 + 33 * 5 + 1
 
     // 1755 -> too high?
-    private fun nodes() = input().drop(2).map { it.split(Regex(" +")) }.map { line ->
+    private fun nodes() = inputLines().drop(2).map { it.split(Regex(" +")) }.map { line ->
         val name = line[0]
         val (size, used, avail) = (1..3).map { line[it].trimEnd('T').toInt() }
         Node(name, size, used, avail)

@@ -12,7 +12,7 @@ object Day14 : AdventOfCode(2016, 14) {
 
     private fun keys(rounds: Int = 1) = sequence {
 
-        val salt = input()[0]
+        val salt = inputLines()[0]
         val hashes = (0..1000).map { hash(salt, it, rounds) }.toMutableList()
         var i = 0
         while (true) {

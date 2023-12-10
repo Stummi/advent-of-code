@@ -102,7 +102,7 @@ object Day17 : AdventOfCode(2022, 17) {
     override val part1: Int
         get() {
             val tileProvider = RingProvider(tiles)
-            val jetProvider = RingProvider(input().first().toList())
+            val jetProvider = RingProvider(inputLines().first().toList())
             val game = Game(jetProvider)
             repeat(2022) {
                 game.addTile(tileProvider.next())
@@ -116,7 +116,7 @@ object Day17 : AdventOfCode(2022, 17) {
     override val part2: Any
         get() {
             val tileProvider = RingProvider(tiles)
-            val jetProvider = RingProvider(input().first().toList())
+            val jetProvider = RingProvider(inputLines().first().toList())
             val game = Game(jetProvider)
 
             val totalTiles = 1000000000000L

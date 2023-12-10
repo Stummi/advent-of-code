@@ -6,7 +6,7 @@ import org.stummi.aoc.helper.XY
 object Day3 : AdventOfCode(2017, 3) {
     override val part1: Any
         get() {
-            var target = input().first().toInt()
+            var target = inputLines().first().toInt()
             spiralCord.drop(target - 1).first().let {
                 return it.orthogonalDistanceTo(XY.ZERO)
             }
@@ -14,7 +14,7 @@ object Day3 : AdventOfCode(2017, 3) {
 
     override val part2: Any
         get() {
-            val target = input().first().toInt()
+            val target = inputLines().first().toInt()
             val values = mutableMapOf(XY.ZERO to 1)
             spiralCord.drop(1).forEach { pos ->
                 val value = pos.mooreNeighbours().sumOf { values[it] ?: 0 }

@@ -3,7 +3,7 @@ package org.stummi.aoc.y2016
 import org.stummi.aoc.AdventOfCode
 
 object Day3 : AdventOfCode(2016, 3) {
-    private fun lines(): List<List<Int>> = input().map {
+    private fun lines(): List<List<Int>> = inputLines().map {
         it.split(" ").filterNot { it.isBlank() }.map { it.toInt() }
     }
 

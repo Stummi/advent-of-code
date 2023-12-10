@@ -5,7 +5,7 @@ import java.math.BigInteger
 
 object Day24 : AdventOfCode(2015, 24) {
     private fun solveForGroups(groups: Int): BigInteger {
-        val weights = Day24.input().map {
+        val weights = Day24.inputLines().map {
             it.toInt()
         }
 

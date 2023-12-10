@@ -8,7 +8,7 @@ object Day19 : AdventOfCode(2016, 19) {
     }
 
     override val part1
-        get() = input().first().let { inp ->
+        get() = inputLines().first().let { inp ->
             var l = (1..inp.toInt()).toList()
             while (l.size > 1) {
                 val isOdd = l.size % 2 == 1
@@ -24,7 +24,7 @@ object Day19 : AdventOfCode(2016, 19) {
         }
 
     override val part2: Int
-        get() = input().first().let { inp ->
+        get() = inputLines().first().let { inp ->
             val l = (1..inp.toInt()).toList()
             return elimination2(l)[0]
         }

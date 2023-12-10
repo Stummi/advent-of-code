@@ -72,7 +72,7 @@ object Day7 : AdventOfCode(2015, 7) {
         }
     }
 
-    private fun parseInput() = input().map { line ->
+    private fun parseInput() = inputLines().map { line ->
         line.split(" -> ").let { s ->
             s[0].split(" ") to s[1]
         }

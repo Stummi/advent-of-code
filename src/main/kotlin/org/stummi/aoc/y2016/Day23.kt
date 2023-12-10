@@ -14,7 +14,7 @@ object Day23 : AdventOfCode(2016, 23) {
         get() = evaluate { put("a", 12) }
 
     fun evaluate(init: MutableMap<String, Int>.() -> Unit = {}): Any {
-        val code = input().map { it.split(" ") }.toMutableList()
+        val code = inputLines().map { it.split(" ") }.toMutableList()
         var cptr = 0
         val registers = mutableMapOf("a" to 0, "b" to 0, "c" to 0, "d" to 0)
         init(registers)

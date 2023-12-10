@@ -18,7 +18,7 @@ object Day20 : AdventOfCode(2021, 20) {
     override val part2 = enhance(50)
 
     fun inputData() =
-        input().let {
+        inputLines().let {
             BitSet(256).apply {
                 it[0].forEachIndexed { idx, v ->
                     set(idx, v == '#')

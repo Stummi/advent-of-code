@@ -4,7 +4,7 @@ import org.stummi.aoc.AdventOfCode
 
 object Day8 : AdventOfCode(2015, 8) {
     override val part1: Any
-        get() = input().map {
+        get() = inputLines().map {
             it.length - it
                 .substring(1, it.length - 1)
                 .replace(Regex("\\\\[^x]"), "_")
@@ -13,7 +13,7 @@ object Day8 : AdventOfCode(2015, 8) {
         }.sum()
 
     override val part2: Any
-        get() = input().map {
+        get() = inputLines().map {
             it.count { c -> c in listOf('"', '\\') } + 2
         }.sum()
 }

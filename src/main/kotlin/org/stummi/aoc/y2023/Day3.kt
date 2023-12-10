@@ -52,7 +52,7 @@ object Day3 : AdventOfCode(2023, 3) {
         val numbersWithPos = mutableListOf<Pair<XY, Int>>()
         val symbolsWithPos = mutableListOf<Pair<XY, Char>>()
 
-        input().forEachIndexed { y, line ->
+        inputLines().forEachIndexed { y, line ->
             numberRegex.findAll(line).forEach { match ->
                 val x = match.range.first
                 val number = match.value.toInt()

@@ -11,7 +11,7 @@ object Day1 : AdventOfCode(2022, 1) {
 
     private fun snacks() = sequence {
         var cnt = 0
-        input().forEach {
+        inputLines().forEach {
             if (it.isBlank()) {
                 yield(cnt)
                 cnt = 0

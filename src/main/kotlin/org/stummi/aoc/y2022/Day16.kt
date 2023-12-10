@@ -241,7 +241,7 @@ object Day16 : AdventOfCode(2022, 16) {
     }
 
     private fun readValves(): List<Valve> {
-        return input().map { it.split(" ") }.map {
+        return inputLines().map { it.split(" ") }.map {
             val name = it[1]
             val flowRate = it[4].removePrefix("rate=").removeSuffix(";").toInt()
             val connections = it.drop(9).map { it.removeSuffix(",") }

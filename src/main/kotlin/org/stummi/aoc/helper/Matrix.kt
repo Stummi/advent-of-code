@@ -81,12 +81,34 @@ class CharMatrix(
     override val bounds: XYRange,
     val values: CharArray = CharArray(bounds.area),
 ) : AbstractArrayMatrix<Char>(bounds) {
+
+    companion object {
+        fun fromLines(lines: List<String>): CharMatrix {
+            if (lines.isEmpty()) {
+                return CharMatrix(XY.ZERO..<XY.ZERO)
+            }
+
+            val firstLength = lines.first().length
+            check(lines.all { it.length == firstLength }) { "All lines must have same length" }
+            val bounds = XY(0, 0)..<XY(firstLength, lines.size)
+            return CharMatrix(
+                bounds,
+                lines.flatMap { it.toCharArray().asSequence() }.toCharArray()
+            )
+        }
+    }
+
+
     override val allValues: Sequence<Char>
         get() = values.asSequence()
 
     override fun getByIndex(index: Int) = values[index]
     override fun setByIndex(index: Int, value: Char) {
         values[index] = value
+    }
+
+    fun print() {
+        bounds.printAsMap { get(it) }
     }
 }
 

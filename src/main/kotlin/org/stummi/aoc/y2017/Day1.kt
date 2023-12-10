@@ -11,11 +11,11 @@ object Day1 : AdventOfCode(2017, 1) {
     }
 
     override val part1: Any
-        get() = input()[0].toList().let { it + it[0] }.windowed(2)
+        get() = inputLines()[0].toList().let { it + it[0] }.windowed(2)
             .filter { it[0] == it[1] }.sumOf { it[0].digitToInt() }
 
     override val part2: Any
-        get() = input()[0].toList().let { l -> l.mapIndexed { i, c -> c to l[(i + l.size / 2) % l.size] } }
+        get() = inputLines()[0].toList().let { l -> l.mapIndexed { i, c -> c to l[(i + l.size / 2) % l.size] } }
             .filter { it.first == it.second }.sumOf { it.first.digitToInt() }
 }
 

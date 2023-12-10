@@ -16,7 +16,7 @@ object Day9 : AdventOfCode(2022, 9) {
         var head = XY(0, 0)
         val tail = generateSequence { XY(0, 0) }.take(amountOfTails).toMutableList()
         val tails = mutableSetOf<XY>()
-        input().map { it.split(" ") }.forEach { (d, a) ->
+        inputLines().map { it.split(" ") }.forEach { (d, a) ->
             repeat(a.toInt()) {
                 head = when (d) {
                     "R" -> head.right

@@ -13,7 +13,7 @@ object Day1 : AdventOfCode(2015, 1) {
     val solve: Pair<Int, Int> by lazy {
         var level = 0
         var firstBasement = 0
-        val input = input().first().forEachIndexed { pos, it ->
+        val input = inputLines().first().forEachIndexed { pos, it ->
             when (it) {
                 '(' -> ++level
                 ')' -> --level

@@ -13,7 +13,7 @@ object Day4 : AdventOfCode(2015, 4) {
 
     fun solve(zeroes: Int): Int {
         val searchPrefix = "0".repeat(zeroes)
-        val prefix = input().first()
+        val prefix = inputLines().first()
         var idx = 0
         while (true) {
             val check = md5String("$prefix$idx")

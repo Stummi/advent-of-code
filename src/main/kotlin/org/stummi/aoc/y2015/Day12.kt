@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import org.stummi.aoc.AdventOfCode
 
 object Day12 : AdventOfCode(2015, 12) {
-    fun parsedInput() = jacksonObjectMapper().readValue<Map<String, Any>>(input().joinToString(""))
+    fun parsedInput() = jacksonObjectMapper().readValue<Map<String, Any>>(inputLines().joinToString(""))
 
     override val part1: Any
         get() = sumOfValues(parsedInput(), mapFilter = { false })

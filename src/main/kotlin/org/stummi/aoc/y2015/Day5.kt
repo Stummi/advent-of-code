@@ -14,7 +14,7 @@ object Day5 : AdventOfCode(2015, 5) {
                 { forbiddenStrings.none { fs -> fs in it } }
             )
 
-            return input().count { s -> niceRules.all { it(s) } }
+            return inputLines().count { s -> niceRules.all { it(s) } }
         }
 
     override val part2: Any
@@ -24,7 +24,7 @@ object Day5 : AdventOfCode(2015, 5) {
                 { (2 until it.length).any { idx -> it[idx - 2] == it[idx] } }
             )
 
-            return input().count { s -> niceRules.all { it(s) } }
+            return inputLines().count { s -> niceRules.all { it(s) } }
         }
 
 }

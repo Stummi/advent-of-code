@@ -12,7 +12,7 @@ object Day21 : AdventOfCode(2016, 21) {
         get() {
             var password = "abcdefgh".orSample().toList()
 
-            val instructions = input().map { it.split(" ") };
+            val instructions = inputLines().map { it.split(" ") };
             password = applyInstructions(instructions, password)
 
             return password.joinToString("")
@@ -89,7 +89,7 @@ object Day21 : AdventOfCode(2016, 21) {
 
     override val part2: String
         get() {
-            val instructions = input().map { it.split(" ") };
+            val instructions = inputLines().map { it.split(" ") };
             val pw = "fbgdceah".toList();
             pw.toList().allPermutations().first() {
                 applyInstructions(instructions, it) == pw

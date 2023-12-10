@@ -12,7 +12,7 @@ object Day9 : AdventOfCode(2015, 9) {
 
 
     private fun allDistances(): Sequence<Int> {
-        val distances = input().map {
+        val distances = inputLines().map {
             it.split(" ")
         }.associate {
             val f = it[0]

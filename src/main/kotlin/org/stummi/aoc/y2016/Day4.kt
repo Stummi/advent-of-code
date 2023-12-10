@@ -27,7 +27,7 @@ object Day4 : AdventOfCode(2016, 4) {
             return realRooms().sumOf { it.id }
         }
 
-    private fun realRooms() = input().map {
+    private fun realRooms() = inputLines().map {
         val lastDash = it.lastIndexOf("-")
         val roomName = it.substring(0, lastDash)
         val (id: Int, checksum: String) = it.substring(lastDash + 1).split("[")

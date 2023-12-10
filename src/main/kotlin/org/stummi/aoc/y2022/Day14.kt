@@ -84,7 +84,7 @@ object Day14 : AdventOfCode(2022, 14) {
         }
 
     private fun readMap(): Game {
-        val l = input().map {
+        val l = inputLines().map {
             it.split(" -> ").windowed(2).map {
                 val xy1 = parseXY(it[0])
                 val xy2 = parseXY(it[1])

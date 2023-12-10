@@ -20,7 +20,7 @@ object Day14 : AdventOfCode(2015, 14) {
             get() = time + resting
     }
 
-    fun parsedInput() = input().map {
+    fun parsedInput() = inputLines().map {
         it.split(" ")
     }.map {
         val name = it[0]

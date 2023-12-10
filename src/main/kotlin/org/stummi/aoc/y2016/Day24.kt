@@ -50,7 +50,7 @@ object Day24 : AdventOfCode(2016, 24) {
     private fun readMap(): Game {
         val walls = mutableListOf<XY>()
         val digits = mutableMapOf<Int, XY>()
-        input().forEachIndexed { y, line ->
+        inputLines().forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
                 when (char) {
                     '#' -> walls.add(XY(x, y))

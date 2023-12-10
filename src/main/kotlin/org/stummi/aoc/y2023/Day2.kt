@@ -20,7 +20,7 @@ object Day2 : AdventOfCode(2023, 2) {
             minPossibleValues.values.reduce(Int::times)
         }.sum()
 
-    private fun parsedInput() = input().map {
+    private fun parsedInput() = inputLines().map {
         val (name, descr) = it.split(": ")
         val id = name.split(" ")[1].toInt()
         val drafts = parseDrafts(descr)

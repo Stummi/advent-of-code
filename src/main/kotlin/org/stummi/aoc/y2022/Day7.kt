@@ -22,7 +22,7 @@ object Day7 : AdventOfCode(2022, 7) {
         }
 
     private fun readDirSizes(): MutableMap<List<String>, Int> {
-        val lines = input().map { it.split(" ") }
+        val lines = inputLines().map { it.split(" ") }
         var l = 0
         val path = mutableListOf<String>()
         val totalSizeByDir = mutableMapOf<List<String>, Int>()

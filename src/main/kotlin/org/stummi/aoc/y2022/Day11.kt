@@ -85,7 +85,7 @@ object Day11 : AdventOfCode(2022, 11) {
     }
 
     private fun readMonkeys(): List<Monkey> {
-        return input().chunked(7).map {
+        return inputLines().chunked(7).map {
             it.map { l -> l.trim().split(" ") }.let {
                 val nr = it[0][1].trimEnd(':').toInt()
                 val items = it[1].drop(2).map { w -> w.trimEnd(',').toLong() }

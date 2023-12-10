@@ -198,7 +198,7 @@ object Day19 : AdventOfCode(2021, 19) {
         return null
     }
 
-    val inputData = input().let { i ->
+    val inputData = inputLines().let { i ->
         (i.mapIndexedNotNull { index, s -> if (s.isBlank()) index else null }
                 + listOf(-1, i.size)).sorted().windowed(2).map {
             i.subList(it[0] + 1, it[1])

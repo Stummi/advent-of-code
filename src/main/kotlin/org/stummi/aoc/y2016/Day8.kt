@@ -11,7 +11,7 @@ object Day8 : AdventOfCode(2016, 8) {
 
     private fun resolve(): IntMatrix {
         val matrix = IntMatrix(50, 6)
-        input().map {
+        inputLines().map {
             it.split(" ")
         }.forEach {
             when (it.first()) {

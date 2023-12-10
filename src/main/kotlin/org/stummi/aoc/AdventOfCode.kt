@@ -1,6 +1,7 @@
 package org.stummi.aoc
 
 import org.stummi.aoc.api.AocApi
+import org.stummi.aoc.helper.CharMatrix
 import java.io.IOException
 import java.io.InputStream
 import java.util.Random
@@ -68,23 +69,27 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         samples.add(Sample(Resource(input), result1, result2, "<${shorten(input)}>", additionalData))
     }
 
-    open fun input() = ((currentSample?.input) ?: api).read()
+    val input get() = ((currentSample?.input) ?: api)
+    fun inputLines() = input.lines
 
-    fun interface Input {
-        fun read(): List<String>
+
+    interface Input {
+        val lines: List<String>
+        val matrix: CharMatrix get() = CharMatrix.fromLines(lines)
     }
 
     data class Raw(val s: String) : Input {
-        override fun read() = listOf(s)
+        override val lines get() = listOf(s)
         override fun toString() = s
     }
 
     inner class Resource(val name: String) : Input {
-        override fun read(): List<String> =
-            (resourceAsStream(name) ?: throw InputMissingException())
-                .use {
-                    it.bufferedReader().readLines()
-                }
+        override val lines
+            get() =
+                (resourceAsStream(name) ?: throw InputMissingException())
+                    .use {
+                        it.bufferedReader().readLines()
+                    }
 
         override fun toString(): String = "<$name>"
     }
@@ -93,9 +98,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         Unit.javaClass.getResourceAsStream("/$year/${day}_$name.txt")
 
     inner class Api : Input {
-        private val cachedInput by kotlin.lazy { AocApi.input(year, day) }
-
-        override fun read() = cachedInput
+        override val lines by kotlin.lazy { AocApi.input(year, day) }
         override fun toString(): String = "(API)"
     }
 
@@ -195,7 +198,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
             samples.forEach {
                 println("Sample: ${it.name}")
                 currentSample = it
-                input()
+                inputLines()
                 if (it.result1 != Unit)
                     samplesPass1 = samplesPass1 and printPart(1, it.result1) { part1 }
                 if (it.result2 != Unit)
@@ -209,7 +212,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         }
         currentSample = null
         println("Real Run:");
-        input() // read input into cache so ApiAccess is nt part of timing data
+        inputLines() // read input into cache so ApiAccess is nt part of timing data
         printPart(1, null) { part1 }
         printPart(2, null) { part2 }
     }

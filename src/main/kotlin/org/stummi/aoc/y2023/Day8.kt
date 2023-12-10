@@ -16,7 +16,7 @@ object Day8 : AdventOfCode(2023, 8) {
     )
 
     private fun parseInput(): Input {
-        val input = input()
+        val input = inputLines()
         val lrString = input.first()
         val mappings = input.drop(2).map {
             val (a, b) = it.split(" = ")

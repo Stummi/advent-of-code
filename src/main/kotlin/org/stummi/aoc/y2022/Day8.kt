@@ -9,7 +9,7 @@ object Day8 : AdventOfCode(2022, 8) {
     }
 
     override val part1
-        get() = input().map {
+        get() = inputLines().map {
             it.map(Char::digitToInt)
         }.let { trees ->
             val rows = trees.size
@@ -31,7 +31,7 @@ object Day8 : AdventOfCode(2022, 8) {
         }
 
     override val part2
-        get() = input().map {
+        get() = inputLines().map {
             it.map(Char::digitToInt)
         }.let { trees ->
             val rows = trees.size

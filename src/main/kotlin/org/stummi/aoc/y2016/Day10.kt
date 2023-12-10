@@ -56,7 +56,7 @@ object Day10 : AdventOfCode(2016, 10) {
     }
 
     fun runSimulation(): Context {
-        val map = input().map { it.split(" ") }.groupBy { it[0] }
+        val map = inputLines().map { it.split(" ") }.groupBy { it[0] }
         val initValues = map["value"]!!.map {
             it[1].toInt() to it[5].toInt()
         }

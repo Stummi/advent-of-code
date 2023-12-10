@@ -6,7 +6,7 @@ import org.stummi.aoc.AdventOfCode
 object Day11 : AdventOfCode(2015, 11) {
 
     val solve by lazy {
-        val input = input().first()
+        val input = inputLines().first()
         val pw = input.toCharArray()
         val (p1, p2) = generateSequence {
             increasePassword(pw)

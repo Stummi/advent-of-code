@@ -18,7 +18,7 @@ object Day7 : AdventOfCode(2016, 7) {
             }
         }.count()
 
-    private fun inputIps() = input().map {
+    private fun inputIps() = inputLines().map {
         it.split('[', ']').mapIndexed { i, s -> s to i }.partition {
             it.second % 2 == 0
         }.let {

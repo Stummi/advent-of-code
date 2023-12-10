@@ -3,7 +3,7 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day23 : AdventOfCode(2015, 23) {
-    fun parsedInput() = input().map {
+    fun parsedInput() = inputLines().map {
         it.split(" ", limit = 2)
     }.map {
         it[0] to it[1].split(", ")

@@ -16,7 +16,7 @@ object Day17 : AdventOfCode(2015, 17) {
         }
 
     val solve by lazy {
-        val containers = input().map { it.toInt() }
+        val containers = inputLines().map { it.toInt() }
         fillContainers(150.orSample(), containers)
     }
 }

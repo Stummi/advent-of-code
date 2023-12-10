@@ -3,17 +3,17 @@ package org.stummi.aoc.y2015
 import org.stummi.aoc.AdventOfCode
 
 object Day20 : AdventOfCode(2015, 20) {
-    val input get() = input().first().toInt()
+    val parsedInput get() = input.lines.first().toInt()
 
     override val part1: Int
         get() {
-            val maxHouses = input / 10
+            val maxHouses = parsedInput / 10
             val houses = IntArray(maxHouses + 1)
             (1..maxHouses).forEach { e ->
                 (e..maxHouses step e).forEach {
                     houses[it] += e * 10
                 }
-                if (houses[e] >= input) {
+                if (houses[e] >= parsedInput) {
                     return e
                 }
             }
@@ -22,7 +22,7 @@ object Day20 : AdventOfCode(2015, 20) {
 
     override val part2: Int
         get() {
-            val maxHouses = input / 10
+            val maxHouses = parsedInput / 10
             val houses = IntArray(maxHouses + 1)
             (1..maxHouses).forEach { e ->
                 repeat(50) {
@@ -32,7 +32,7 @@ object Day20 : AdventOfCode(2015, 20) {
                     }
                 }
 
-                if (houses[e] >= input) {
+                if (houses[e] >= parsedInput) {
                     return e
                 }
             }

@@ -10,7 +10,7 @@ object Day2 : AdventOfCode(2017, 2) {
         resourceSample("demo2", Unit, 9)
     }
 
-    fun parseInput() = input().map { it.split(" ", "\t").map(String::toInt) }
+    fun parseInput() = inputLines().map { it.split(" ", "\t").map(String::toInt) }
     override val part1: Any
         get() = parseInput().map { numbers ->
             numbers.max() - numbers.min()

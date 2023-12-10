@@ -18,7 +18,7 @@ object Day4 : AdventOfCode(2022, 4) {
         first.contains(second.first)
 
 
-    private fun data() = input().map {
+    private fun data() = inputLines().map {
         it.split(Regex("[\\-,]")).map { it.toInt() }
     }.map {
         (it[0]..it[1]) to (it[2]..it[3])
