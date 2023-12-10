@@ -17,6 +17,8 @@ data class XY(
     val downLeft get() = XY(x - 1, y + 1)
     val downRight get() = XY(x + 1, y + 1)
 
+    val negativeValue get() = XY(-x, -y)
+
     fun move(x: Int = 0, y: Int = 0): XY {
         return XY(this.x + x, this.y + y)
     }
@@ -53,6 +55,11 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
 
     val xRange get() = left..right
     val yRange get() = top..bottom
+
+    val width get() = right - left + 1
+    val height get() = bottom - top + 1
+    val area: Int get() = width * height
+
 
     fun asSequence() = xRange.asSequence().map { x -> yRange.asSequence().map { y -> XY(x, y) } }.flatten()
 

@@ -1,93 +1,119 @@
 package org.stummi.aoc.helper
 
+import java.util.BitSet
+
 typealias OutOfRangeFunc = (Int, Int) -> Int
 
-class IntMatrix(
-    val w: Int,
-    val h: Int,
-    val data: IntArray = IntArray(w * h),
-    val outOfRangeFunc: OutOfRangeFunc = { _, _ -> throw IllegalArgumentException("out of range") }
-) {
+interface Matrix<T> {
+    val bounds: XYRange
+    operator fun get(xy: XY): T
+    operator fun set(xy: XY, value: T)
 
-    constructor(l: List<List<Int>>) : this(l[0].size, l.size, l.flatten().toIntArray())
+    val allValues: Sequence<T>
+}
 
-    fun withOutOfRangeFunc(func: OutOfRangeFunc) = IntMatrix(w, h, data, func)
+abstract class AbstractArrayMatrix<T>(
+    override val bounds: XYRange
+) : Matrix<T> {
+    protected abstract fun getByIndex(index: Int): T
+    protected abstract fun setByIndex(index: Int, value: T)
 
-    private fun posToIdx(x: Int, y: Int): Int {
-        check(isInRange(x, y))
-        return y * w + x
+    override val allValues: Sequence<T>
+        get() = (0..bounds.area).asSequence().map {
+            getByIndex(it)
+        }
+
+    protected fun posToIdx(xy: XY): Int {
+        check(xy in bounds) { "$xy is out of bounds" }
+        return xy.translate(bounds.topLeft.negativeValue).let {
+            xy.y * bounds.width + xy.x
+        }
     }
-
-    private fun isInRange(x: Int, y: Int) =
-        (x in (0 until w)) && (y in (0 until h))
-
 
     fun row(r: Int) =
-        (0 until w).asSequence().map { this[it, r] }
-
-    fun setRow(r: Int, data: Iterable<Int>) {
-        data.forEachIndexed { i, v -> this[i, r] = v }
-    }
-
-    fun setCol(c: Int, data: Iterable<Int>) {
-        data.forEachIndexed { i, v -> this[c, i] = v }
-    }
-
+        bounds.xRange.asSequence().map { this[XY(it, r)] }
 
     fun col(c: Int) =
-        (0 until h).asSequence().map { this[c, it] }
+        bounds.yRange.asSequence().map { this[XY(c, it)] }
+
+
+    fun setRow(r: Int, data: Iterable<T>) {
+        data.forEachIndexed { i, v -> this[XY(i + bounds.left, r)] = v }
+    }
+
+    fun setCol(c: Int, data: Iterable<T>) {
+        data.forEachIndexed { i, v -> this[XY(c, i + bounds.top)] = v }
+    }
 
     fun rows() =
-        (0 until h).asSequence().map { row(it).toList() }
+        bounds.yRange.asSequence().map { row(it).toList() }
 
     fun cols() =
-        (0 until w).asSequence().map { col(it).toList() }
+        bounds.xRange.asSequence().map { col(it).toList() }
 
+    override operator fun get(xy: XY) = getByIndex(posToIdx(xy))
+    override operator fun set(xy: XY, value: T) = setByIndex(posToIdx(xy), value)
+}
 
-    operator fun get(x: Int, y: Int) = if (isInRange(x, y)) {
-        data[posToIdx(x, y)]
-    } else {
-        outOfRangeFunc(x, y)
+class IntMatrix(
+    override val bounds: XYRange,
+    val values: IntArray = IntArray(bounds.area),
+) : AbstractArrayMatrix<Int>(bounds) {
+    constructor(rows: List<List<Int>>) : this(
+        XY.ZERO..<XY(rows[0].size, rows.size),
+        rows.flatten().toIntArray()
+    )
+
+    constructor(width: Int, height: Int) : this(XY.ZERO..<XY(width, height))
+
+    override fun getByIndex(index: Int): Int =
+        values[index]
+
+    override fun setByIndex(index: Int, value: Int) {
+        values[index] = value
     }
 
-    operator fun get(pos: XY) = get(pos.x, pos.y)
+    override val allValues: Sequence<Int>
+        get() = values.asSequence()
+}
 
-    operator fun set(x: Int, y: Int, value: Int) {
-        data[posToIdx(x, y)] = value
+class CharMatrix(
+    override val bounds: XYRange,
+    val values: CharArray = CharArray(bounds.area),
+) : AbstractArrayMatrix<Char>(bounds) {
+    override val allValues: Sequence<Char>
+        get() = values.asSequence()
+
+    override fun getByIndex(index: Int) = values[index]
+    override fun setByIndex(index: Int, value: Char) {
+        values[index] = value
     }
+}
 
-    operator fun set(pos: XY, value: Int) {
-        set(pos.x, pos.y, value)
-    }
+class BoolMatrix(
+    override val bounds: XYRange,
+    val values: BitSet = BitSet(bounds.area)
+) : AbstractArrayMatrix<Boolean>(bounds) {
+    override fun getByIndex(index: Int): Boolean =
+        values[index]
 
-    fun toString(printer: (Int) -> String): String =
-        rows().joinToString("\n") {
-            it.joinToString("", transform = printer)
-        }
-
-    companion object {
-        fun binaryPrinter(trueVal: String, falseVal: String): (Int) -> String = {
-            if (it == 0) falseVal else trueVal
-        }
+    override fun setByIndex(index: Int, value: Boolean) {
+        values[index] = value
     }
 
 }
 
-fun main() {
-    val im = IntMatrix(5, 5)
-
-    im.rows().forEach {
-        println(it)
+class OutOfRangeHandlingMatrix<T>(
+    val delegate: Matrix<T>,
+    val outOfRangeFunc: Matrix<T>.(xy: XY) -> T
+) : Matrix<T> by delegate {
+    override fun get(xy: XY): T {
+        return if (xy in bounds) {
+            delegate.get(xy)
+        } else {
+            outOfRangeFunc(xy)
+        }
     }
 }
 
-/*
-class Matrix<K>(val w: Int, val h: Int, val data: Array<K>) {
-
-    companion object {
-        inline fun <reified K>  newMatrix(w: Int, h: Int): Matrix<K> {
-            val f = Array<K>(w * h)
-
-        }
-    }
-}*/
+fun <T> Matrix<T>.withOutOfRangeFunc(func: Matrix<T>.(xy: XY) -> T): Matrix<T> = OutOfRangeHandlingMatrix(this, func)

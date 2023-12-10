@@ -2,11 +2,12 @@ package org.stummi.aoc.y2016
 
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.IntMatrix
+import org.stummi.aoc.helper.XY
 
 object Day8 : AdventOfCode(2016, 8) {
     override val part1: Int
         get() =
-            resolve().data.count { it == 1 }
+            resolve().values.count { it == 1 }
 
     private fun resolve(): IntMatrix {
         val matrix = IntMatrix(50, 6)
@@ -19,7 +20,7 @@ object Day8 : AdventOfCode(2016, 8) {
                     (0 until w).flatMap { x ->
                         (0 until h).map { y -> x to y }
                     }.forEach { (x, y) ->
-                        matrix[x, y] = 1
+                        matrix[XY(x, y)] = 1
                     }
                 }
 
