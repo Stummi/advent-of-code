@@ -30,6 +30,7 @@ data class XY(
     fun mooreDistanceTo(goal: XY) = max((x - goal.x).absoluteValue, (y - goal.y).absoluteValue)
 
     operator fun rangeTo(other: XY) = listOf(this, other).bounds()
+    operator fun rangeUntil(xy: XY) = rangeTo(xy.upLeft)
 
     infix fun until(xy: XY) = this..xy.upLeft
 
