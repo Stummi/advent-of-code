@@ -9,7 +9,11 @@ interface Matrix<T> {
     operator fun get(xy: XY): T
     operator fun set(xy: XY, value: T)
 
+    fun find(value: T): XY
+
     val allValues: Sequence<T>
+    val width: Int get() = bounds.width
+    val height: Int get() = bounds.height
 }
 
 abstract class AbstractArrayMatrix<T>(
@@ -26,9 +30,11 @@ abstract class AbstractArrayMatrix<T>(
     protected fun posToIdx(xy: XY): Int {
         check(xy in bounds) { "$xy is out of bounds" }
         return xy.translate(bounds.topLeft.negativeValue).let {
-            xy.y * bounds.width + xy.x
+            xy.y * width + xy.x
         }
     }
+
+    protected fun idxToPos(idx: Int) = XY(idx % width, idx / width)
 
     fun row(r: Int) =
         bounds.xRange.asSequence().map { this[XY(it, r)] }
@@ -53,6 +59,9 @@ abstract class AbstractArrayMatrix<T>(
 
     override operator fun get(xy: XY) = getByIndex(posToIdx(xy))
     override operator fun set(xy: XY, value: T) = setByIndex(posToIdx(xy), value)
+
+    override fun find(value: T): XY =
+        idxToPos(allValues.indexOfFirst { it == value })
 }
 
 class IntMatrix(
@@ -139,3 +148,7 @@ class OutOfRangeHandlingMatrix<T>(
 }
 
 fun <T> Matrix<T>.withOutOfRangeFunc(func: Matrix<T>.(xy: XY) -> T): Matrix<T> = OutOfRangeHandlingMatrix(this, func)
+
+fun main() {
+
+}
