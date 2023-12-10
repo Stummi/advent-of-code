@@ -4,6 +4,7 @@ import org.stummi.aoc.api.AocApi
 import org.stummi.aoc.helper.CharMatrix
 import java.io.IOException
 import java.io.InputStream
+import java.time.Instant
 import java.util.Random
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -11,6 +12,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.TimedValue
 import kotlin.time.measureTimedValue
+import kotlin.time.toKotlinDuration
 
 class InputMissingException : IOException() {}
 
@@ -234,6 +236,12 @@ fun List<AdventOfCode>.runAll() {
         futures[it to 2] = future2
     }
 
+    var totalTime = Duration.ZERO
+    var totalClockTime = Duration.ZERO
+    var maxTime = Duration.ZERO
+    lateinit var maxTimeTask: Pair<AdventOfCode, Int>
+
+    var allStart = Instant.now()
     forEach {
 //        it.input() // read input into cache so ApiAccess is nt part of timing data
         print(String.format("%10s", "${it.year}/${it.day}"))
@@ -269,6 +277,24 @@ fun List<AdventOfCode>.runAll() {
         printResult(p1, t1)
         val (p2, t2) = futures[it to 2]!!.get()
         printResult(p2, t2)
+
+        totalTime += t1
+        totalTime += t2
+
+        if(t1 > maxTime) {
+            maxTime = t1
+            maxTimeTask = it to 1
+        }
+
+        if(t2 > maxTime) {
+            maxTime = t2
+            maxTimeTask = it to 2
+        }
+
         println()
     }
+    var allEnd = Instant.now()!!
+    println("Clock Time: ${java.time.Duration.between(allStart, allEnd).toKotlinDuration()}")
+    println("Total Time: $totalTime")
+    println("Max Time: $maxTime - ${maxTimeTask.first.year}/${maxTimeTask.first.day} pt ${maxTimeTask.second}")
 }
