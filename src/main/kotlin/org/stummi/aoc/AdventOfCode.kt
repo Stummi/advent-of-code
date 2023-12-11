@@ -281,12 +281,12 @@ fun List<AdventOfCode>.runAll() {
         totalTime += t1
         totalTime += t2
 
-        if(t1 > maxTime) {
+        if (t1 > maxTime) {
             maxTime = t1
             maxTimeTask = it to 1
         }
 
-        if(t2 > maxTime) {
+        if (t2 > maxTime) {
             maxTime = t2
             maxTimeTask = it to 2
         }

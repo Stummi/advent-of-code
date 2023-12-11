@@ -10,6 +10,7 @@ interface Matrix<T> {
     operator fun set(xy: XY, value: T)
 
     fun find(value: T): XY
+    fun findAll(value: T): Sequence<XY>
 
     val allValues: Sequence<T>
     val width: Int get() = bounds.width
@@ -62,6 +63,9 @@ abstract class AbstractArrayMatrix<T>(
 
     override fun find(value: T): XY =
         idxToPos(allValues.indexOfFirst { it == value })
+
+    override fun findAll(value: T): Sequence<XY> =
+        allValues.withIndex().filter { (_, v) -> v == value }.map { (idx, _) -> idxToPos(idx) }
 }
 
 class IntMatrix(
