@@ -138,9 +138,9 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
             var wrong = false;
             if (result.isSuccess) {
                 val (res, duration) = result.getOrThrow()
-                when (expected) {
+                when (expected?.toString()) {
                     null -> print("    ")
-                    res -> print("  ✔️ ")
+                    res.toString() -> print("  ✔️ ")
                     else -> {
                         print("  ❌ ")
                         wrong = true

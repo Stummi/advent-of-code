@@ -5,13 +5,21 @@ import org.stummi.aoc.helper.astar
 import kotlin.time.ExperimentalTime
 
 object Day11 : AdventOfCode(2016, 11) {
+    var validCnt = 0L
+
+    init {
+        resourceSample("demo", 11, Unit)
+    }
+
     override val part1
         get() = astar(
             readState(),
             { it.possibleMoves().map { it to 1 } },
             { it.isDone() },
             { it.heuristicCost() }
-        ).size
+        ).size.also {
+            println(validCnt)
+        }
 
     override val part2
         get() = astar(
@@ -19,7 +27,9 @@ object Day11 : AdventOfCode(2016, 11) {
             { it.possibleMoves().map { it to 1 } },
             { it.isDone() },
             { it.heuristicCost() }
-        ).size
+        ).size.also {
+            println(validCnt)
+        }
 
     enum class MachineType {
         Generator,
@@ -59,6 +69,7 @@ object Day11 : AdventOfCode(2016, 11) {
         }
 
         fun isValid(): Boolean {
+            ++validCnt
             return floors.all {
                 isFloorValid(it)
             }
@@ -119,10 +130,10 @@ object Day11 : AdventOfCode(2016, 11) {
         }
 
         fun heuristicCost(): Int {
-            return 0
-            /*return floors.dropLast(1).mapIndexed { f, items ->
-                (3 - f * items.size) / 2
-            }.sum()*/
+            return floors.dropLast(1).mapIndexed { idx, f ->
+                val cost = 3 - idx
+                cost * (f.size / 2)
+            }.sum()
         }
     }
 
