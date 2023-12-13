@@ -66,6 +66,8 @@ abstract class AbstractArrayMatrix<T>(
 
     override fun findAll(value: T): Sequence<XY> =
         allValues.withIndex().filter { (_, v) -> v == value }.map { (idx, _) -> idxToPos(idx) }
+
+    override fun toString(): String = "Matrix[$width,$height]"
 }
 
 class IntMatrix(
