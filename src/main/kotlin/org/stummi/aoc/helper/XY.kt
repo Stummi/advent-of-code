@@ -61,7 +61,22 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
     val area: Int get() = width * height
 
 
-    fun asSequence() = xRange.asSequence().map { x -> yRange.asSequence().map { y -> XY(x, y) } }.flatten()
+    enum class IterationOrder(val func: XYRange.() -> Sequence<XY>) {
+        TB_LR(yThenX(false, false)),
+        TB_RL(yThenX(true, false)),
+        BT_LR(yThenX(false, true)),
+        BT_RL(yThenX(true, true)),
+        LR_TB(xThenY(false, false)),
+        RL_TB(xThenY(true, false)),
+        LR_BT(xThenY(false, true)),
+        RL_BT(xThenY(true, true));
+
+        operator fun invoke(r: XYRange) =
+            func(r)
+
+    }
+
+    fun asSequence(order: IterationOrder = IterationOrder.TB_LR) = order(this)
 
     fun outLineAsSequence(): Sequence<XY> {
         val topLine = xRange.asSequence().map { XY(it, top) }
@@ -87,6 +102,30 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
             println()
         }
     }
+
+    companion object {
+        private fun IntRange.maybeReverse(b: Boolean) = if (b) this.reversed() else this
+        private fun xThenY(reverseX: Boolean, reverseY: Boolean): XYRange.() -> Sequence<XY> = {
+            xRange
+                .maybeReverse(reverseX)
+                .asSequence().map { x ->
+                    yRange
+                        .maybeReverse(reverseY)
+                        .asSequence().map { y -> XY(x, y) }
+                }.flatten()
+        }
+
+        private fun yThenX(reverseX: Boolean, reverseY: Boolean): XYRange.() -> Sequence<XY> = {
+            yRange
+                .maybeReverse(reverseY)
+                .asSequence().map { y ->
+                    xRange
+                        .maybeReverse(reverseX)
+                        .asSequence().map { x -> XY(x, y) }
+                }.flatten()
+        }
+    }
+
 }
 
 fun Iterable<XY>.bounds(): XYRange {

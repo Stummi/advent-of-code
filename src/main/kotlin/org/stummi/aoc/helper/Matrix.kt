@@ -1,8 +1,7 @@
 package org.stummi.aoc.helper
 
 import java.util.BitSet
-
-typealias OutOfRangeFunc = (Int, Int) -> Int
+import java.util.Objects
 
 interface Matrix<T> {
     val bounds: XYRange
@@ -68,6 +67,22 @@ abstract class AbstractArrayMatrix<T>(
         allValues.withIndex().filter { (_, v) -> v == value }.map { (idx, _) -> idxToPos(idx) }
 
     override fun toString(): String = "Matrix[$width,$height]"
+
+    /**
+     * used for equals and hashcode
+     */
+    protected abstract fun rawDataObject(): Any
+
+    abstract fun clone(): AbstractArrayMatrix<T>
+
+    override fun hashCode(): Int = Objects.hash(bounds, rawDataHash())
+    override fun equals(other: Any?): Boolean =
+        (other is AbstractArrayMatrix<*>) &&
+                other.bounds == bounds &&
+                rawDataEquals(other.rawDataObject())
+
+    protected open fun rawDataEquals(other: Any) = other == rawDataHash()
+    protected open fun rawDataHash(): Any = rawDataObject()
 }
 
 class IntMatrix(
@@ -90,6 +105,18 @@ class IntMatrix(
 
     override val allValues: Sequence<Int>
         get() = values.asSequence()
+
+    override fun rawDataObject(): Any = values
+
+    override fun clone() = IntMatrix(bounds, values.clone())
+
+    override fun rawDataEquals(other: Any): Boolean =
+        (other as? IntArray)?.contentEquals(values) ?: false
+
+    override fun rawDataHash(): Any =
+        values.contentHashCode()
+
+
 }
 
 class CharMatrix(
@@ -125,6 +152,16 @@ class CharMatrix(
     fun print() {
         bounds.printAsMap { get(it) }
     }
+
+    override fun rawDataObject(): Any = values
+    override fun clone() = CharMatrix(bounds, values.clone())
+
+    override fun rawDataEquals(other: Any): Boolean =
+        (other as? CharArray)?.contentEquals(values) ?: false
+
+    override fun rawDataHash() =
+        values.contentHashCode()
+
 }
 
 class BoolMatrix(
@@ -138,15 +175,18 @@ class BoolMatrix(
         values[index] = value
     }
 
+    override fun rawDataObject(): Any = values
+    override fun clone() = BoolMatrix(bounds, values.clone() as BitSet)
+
 }
 
 class OutOfRangeHandlingMatrix<T>(
-    val delegate: Matrix<T>,
-    val outOfRangeFunc: Matrix<T>.(xy: XY) -> T
+    private val delegate: Matrix<T>,
+    private val outOfRangeFunc: Matrix<T>.(xy: XY) -> T
 ) : Matrix<T> by delegate {
     override fun get(xy: XY): T {
         return if (xy in bounds) {
-            delegate.get(xy)
+            delegate[xy]
         } else {
             outOfRangeFunc(xy)
         }
