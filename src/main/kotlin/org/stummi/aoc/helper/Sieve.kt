@@ -58,10 +58,10 @@ object Sieve {
 
     private fun assertSize(i: Long) = synchronized(v) {
         if (i <= size) {
-            return;
+            return
         }
 
-        var newSize = size;
+        var newSize = size
         while (newSize < i) {
             newSize *= 4
         }
@@ -85,20 +85,20 @@ object Sieve {
             fun findNext() {
                 while (cur <= r.last) {
                     if (get(cur)) {
-                        next = cur++;
+                        next = cur++
                         return
                     }
                     ++cur
                 }
-                next = null;
+                next = null
             }
 
             override fun hasNext(): Boolean = next != null
 
             override fun next(): Long {
-                val ret = next;
+                val ret = next
                 findNext()
-                return ret!!;
+                return ret!!
             }
 
         }

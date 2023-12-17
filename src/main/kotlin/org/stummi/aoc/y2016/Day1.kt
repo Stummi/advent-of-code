@@ -9,7 +9,7 @@ object Day1 : AdventOfCode(2016, 1) {
 
 
     private fun move(pos: Pair<Int, Int>, instr: Pair<Char, Int>): Pair<Int, Int> {
-        val (x, y) = pos;
+        val (x, y) = pos
         val (dir, l) = instr
         return when (dir) {
             'N' -> x to y - l

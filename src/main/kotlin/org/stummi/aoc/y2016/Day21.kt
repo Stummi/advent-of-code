@@ -12,7 +12,7 @@ object Day21 : AdventOfCode(2016, 21) {
         get() {
             var password = "abcdefgh".orSample().toList()
 
-            val instructions = inputLines().map { it.split(" ") };
+            val instructions = inputLines().map { it.split(" ") }
             password = applyInstructions(instructions, password)
 
             return password.joinToString("")
@@ -28,12 +28,12 @@ object Day21 : AdventOfCode(2016, 21) {
                 "swap position" -> swap(password1, inst[2].toInt(), inst[5].toInt())
                 "swap letter" -> swap(password1, password1.indexOf(inst[2][0]), password1.indexOf(inst[5][0]))
                 "rotate left" -> {
-                    val p = inst[2].toInt();
+                    val p = inst[2].toInt()
                     password1 = rotateLeft(password1, p)
                 }
 
                 "rotate right" -> {
-                    val p = inst[2].toInt();
+                    val p = inst[2].toInt()
                     password1 = rotateRight(password1, p)
                 }
 
@@ -55,9 +55,9 @@ object Day21 : AdventOfCode(2016, 21) {
                 }
 
                 "move position" -> {
-                    val f = inst[2].toInt();
-                    val t = inst[5].toInt();
-                    val c = password1.removeAt(f);
+                    val f = inst[2].toInt()
+                    val t = inst[5].toInt()
+                    val c = password1.removeAt(f)
                     password1.add(t, c)
                 }
 
@@ -89,9 +89,9 @@ object Day21 : AdventOfCode(2016, 21) {
 
     override val part2: String
         get() {
-            val instructions = inputLines().map { it.split(" ") };
-            val pw = "fbgdceah".toList();
-            pw.toList().allPermutations().first() {
+            val instructions = inputLines().map { it.split(" ") }
+            val pw = "fbgdceah".toList()
+            pw.toList().allPermutations().first {
                 applyInstructions(instructions, it) == pw
             }.let {
                 return it.joinToString("")

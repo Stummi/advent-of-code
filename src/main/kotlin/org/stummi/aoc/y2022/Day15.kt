@@ -45,7 +45,7 @@ object Day15 : AdventOfCode(2022, 15) {
                 }
 
             }
-            return 0;
+            return 0
         }
 
     data class Sensor(val sensorLocation: XY, val beaconLocation: XY) {

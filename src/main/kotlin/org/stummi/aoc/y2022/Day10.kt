@@ -36,7 +36,7 @@ object Day10 : AdventOfCode(2022, 10) {
 
     private fun execute(): MutableList<Int> {
         val cycleValues = mutableListOf<Int>(1)
-        var register = 1;
+        var register = 1
         inputLines().map { it.split(" ") }.forEach {
             when (it.first()) {
                 "noop" -> {

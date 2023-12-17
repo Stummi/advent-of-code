@@ -37,7 +37,7 @@ object Day14 : AdventOfCode(2016, 14) {
                 return md5Sum[it]
             }
         }
-        return null;
+        return null
     }
 }
 

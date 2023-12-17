@@ -62,7 +62,7 @@ object Day6 : AdventOfCode(2015, 6) {
                 }
             }
         }.map {
-            Day6.LightCmd(it[0], parsePoint(it[1]), parsePoint(it[3]))
+            LightCmd(it[0], parsePoint(it[1]), parsePoint(it[3]))
         }
 
     fun parsePoint(s: String) = s.split(",").let {

@@ -162,6 +162,14 @@ class CharMatrix(
     override fun rawDataHash() =
         values.contentHashCode()
 
+    fun toIntMatrix(mapFunc: (Char) -> Int = {it.digitToInt()}): IntMatrix {
+        val ints = IntArray(values.size) {
+            mapFunc(values[it])
+        }
+
+        return IntMatrix(bounds, ints)
+    }
+
 }
 
 class BoolMatrix(

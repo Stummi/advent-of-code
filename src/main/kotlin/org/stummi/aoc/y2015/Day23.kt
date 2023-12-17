@@ -30,7 +30,7 @@ object Day23 : AdventOfCode(2015, 23) {
 
     private fun runSimulation(registers: RegisterMap) {
         val lines = parsedInput()
-        var inst = 0;
+        var inst = 0
         while (inst < lines.size) {
             val code = lines[inst]
             val opCode = code.first

@@ -73,7 +73,7 @@ object Day17 : AdventOfCode(2022, 17) {
             println()
         }
 
-        private fun isLegalPosition(tile: Day17.Tile, pos: XY): Boolean {
+        private fun isLegalPosition(tile: Tile, pos: XY): Boolean {
             if (pos.x < 0) {
                 return false
             }
@@ -110,7 +110,7 @@ object Day17 : AdventOfCode(2022, 17) {
                 //println(game.currentTop)
             }
 
-            return -game.currentTop;
+            return -game.currentTop
         }
 
     override val part2: Any

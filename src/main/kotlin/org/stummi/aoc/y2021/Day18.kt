@@ -11,9 +11,9 @@ interface SnailfishNumber {
         while (true) {
             val next = cur.reduceStep()
             if (next == cur) {
-                return cur;
+                return cur
             }
-            cur = next;
+            cur = next
         }
     }
 

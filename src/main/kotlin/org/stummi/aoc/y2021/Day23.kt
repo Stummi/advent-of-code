@@ -158,7 +158,7 @@ object Day23 : AdventOfCode(2021, 23) {
     override val part2: Any
         get() = solve(insertMissingRows(initialState))
 
-    private fun insertMissingRows(initialState: Day23.GameState): Day23.GameState {
+    private fun insertMissingRows(initialState: GameState): GameState {
         val insert = listOf(
             listOf(D, D),
             listOf(C, B),

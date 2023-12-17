@@ -62,7 +62,7 @@ object Day19 : AdventOfCode(2021, 19) {
 
 
         override fun toString(): String = "{$x,$y,$z}"
-        fun manhattenDistanceTo(pos: Day19.XYZ) =
+        fun manhattenDistanceTo(pos: XYZ) =
             (this - pos).let { listOf(it.x, it.y, it.z) }.map { it.absoluteValue }.sum()
     }
 
@@ -110,13 +110,13 @@ object Day19 : AdventOfCode(2021, 19) {
         override fun hashCode(): Int =
             beacons.hashCode()
 
-        fun translate(diff: Day19.XYZ) = SignalMap(
+        fun translate(diff: XYZ) = SignalMap(
             beacons.map { it.translate(diff) },
             signals.map { it + diff }.sorted(),
             original
         )
 
-        fun merge(m: Day19.SignalMap) = SignalMap(
+        fun merge(m: SignalMap) = SignalMap(
             this.beacons + m.beacons,
             (this.signals + m.signals).distinct().sorted()
         )

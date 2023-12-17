@@ -8,7 +8,7 @@ object Day25 : AdventOfCode(2016, 25) {
 
     class OutputChecker {
         var expect = 0
-        var cnt = 0;
+        var cnt = 0
 
         fun accept(i: Int) {
             //print(i)
@@ -41,7 +41,7 @@ object Day25 : AdventOfCode(2016, 25) {
                     }
                 }
             }
-            return -1;
+            return -1
         }
 
 

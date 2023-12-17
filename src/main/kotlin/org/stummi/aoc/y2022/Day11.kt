@@ -35,7 +35,7 @@ object Day11 : AdventOfCode(2022, 11) {
         val trueGoal: Int,
         val falseGoal: Int,
     ) {
-        var inspectedItems = 0L;
+        var inspectedItems = 0L
         val items = items.toMutableList()
 
         fun addItem(item: Long) {
@@ -75,7 +75,7 @@ object Day11 : AdventOfCode(2022, 11) {
 
         fun moveAllItems(monkeys: List<Monkey>, decreaseWorry: Boolean, bound: Int) {
             val i = items.toList()
-            items.clear();
+            items.clear()
             i.forEach {
                 moveItem(it, monkeys, decreaseWorry, bound)
             }

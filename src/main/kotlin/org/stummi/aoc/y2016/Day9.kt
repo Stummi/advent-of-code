@@ -9,12 +9,12 @@ object Day9 : AdventOfCode(2016, 9) {
         get() = decompressedLength(inputLines().first(), true)
 
     fun decompressedLength(s: String, recursive: Boolean = false): Long {
-        var curPos = 0;
+        var curPos = 0
         var ret = 0L
         while (true) {
             var markerStart = s.indexOf('(', curPos)
             if (markerStart == -1) {
-                break;
+                break
             }
             var markerStop = s.indexOf(')', markerStart)
 

@@ -14,7 +14,7 @@ object Day8 : AdventOfCode(2022, 8) {
         }.let { trees ->
             val rows = trees.size
             val cols = trees[0].size
-            var treesVisible = 0;
+            var treesVisible = 0
             (0 until rows).forEach { row ->
                 (0 until cols).forEach { col ->
                     var tree = trees[row][col]
@@ -36,7 +36,7 @@ object Day8 : AdventOfCode(2022, 8) {
         }.let { trees ->
             val rows = trees.size
             val cols = trees[0].size
-            var maxScore = 0;
+            var maxScore = 0
             (0 until rows).forEach { row ->
                 (0 until cols).forEach { col ->
 
@@ -51,7 +51,7 @@ object Day8 : AdventOfCode(2022, 8) {
 
                     fun viewDist(l: List<Int>, t: Int): Int {
                         if (l.isEmpty()) {
-                            return 0;
+                            return 0
                         }
 
                         return l.indexOfFirst { it >= t }.let {

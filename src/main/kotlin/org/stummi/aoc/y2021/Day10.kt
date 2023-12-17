@@ -74,5 +74,5 @@ fun parseLine_pt1(it: String): Int {
             }
         }
     }
-    return 0;
+    return 0
 }

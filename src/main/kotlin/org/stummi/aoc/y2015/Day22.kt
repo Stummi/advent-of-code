@@ -45,7 +45,7 @@ object Day22 : AdventOfCode(2015, 22) {
         )
         ;
 
-        override fun toString() = name.replace("_", " ");
+        override fun toString() = name.replace("_", " ")
     }
 
     fun getGameStrategies(state: GameState, hardMode: Boolean): Sequence<List<Cast>> {

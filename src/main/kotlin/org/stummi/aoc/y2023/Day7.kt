@@ -41,7 +41,7 @@ object Day7 : AdventOfCode(2023, 7) {
             val type2 = type(o2)
             if (type1 < type2) return 1
             if (type1 > type2) return -1
-            return compareSameType(o1, o2);
+            return compareSameType(o1, o2)
         }
 
         private fun type(h: Hand): Type {
@@ -52,7 +52,7 @@ object Day7 : AdventOfCode(2023, 7) {
             }
         }
 
-        private fun typeWithJoker(h: Day7.Hand): Type {
+        private fun typeWithJoker(h: Hand): Type {
             return allJokerCombinations(h.cardString).map {
                 Hand(h.points, it)
             }.map { h ->

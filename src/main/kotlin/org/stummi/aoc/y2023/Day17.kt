@@ -117,5 +117,5 @@ object Day17 : AdventOfCode(2023, 17) {
 }
 
 fun main() {
-    Day17.fancyRun(includeReal = false)
+    Day17.fancyRun()
 }

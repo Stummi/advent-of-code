@@ -60,7 +60,7 @@ object Day11 : AdventOfCode(2016, 11) {
             }
 
 
-        private fun permutations(items: Set<Day11.Item>): List<Set<Day11.Item>> {
+        private fun permutations(items: Set<Item>): List<Set<Item>> {
             val list = items.toList()
             return list.flatMapIndexed { idx, left ->
                 list
@@ -75,7 +75,7 @@ object Day11 : AdventOfCode(2016, 11) {
             }
         }
 
-        private fun isFloorValid(it: Set<Day11.Item>): Boolean {
+        private fun isFloorValid(it: Set<Item>): Boolean {
             val generators = mutableSetOf<String>()
             val chips = mutableSetOf<String>()
             it.forEach {
@@ -88,7 +88,7 @@ object Day11 : AdventOfCode(2016, 11) {
             return generators.isEmpty() || chips.all { it in generators }
         }
 
-        private fun transform(target: Int, items: Set<Day11.Item>) = State(
+        private fun transform(target: Int, items: Set<Item>) = State(
             target,
             floors.mapIndexed { idx, f ->
                 when (idx) {

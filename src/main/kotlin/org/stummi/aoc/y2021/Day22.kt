@@ -70,12 +70,12 @@ object Day22 : AdventOfCode(2021, 22) {
 
     }
 
-    class CubeMap() {
+    class CubeMap {
         val cubes = mutableSetOf<Cube>()
 
         fun insert(c: Cube) {
             if (c.isEmpty() || cubes.contains(c)) {
-                return;
+                return
             }
 
             var intersect = cubes.find { !it.intersect(c).isEmpty() }

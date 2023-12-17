@@ -31,7 +31,7 @@ object Day15 : AdventOfCode(2016, 15) {
             }
             steps *= positions
         }
-        return time;
+        return time
     }
 }
 

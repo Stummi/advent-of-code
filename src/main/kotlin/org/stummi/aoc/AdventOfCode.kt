@@ -14,7 +14,7 @@ import kotlin.time.TimedValue
 import kotlin.time.measureTimedValue
 import kotlin.time.toKotlinDuration
 
-class InputMissingException : IOException() {}
+class InputMissingException : IOException()
 
 abstract class AdventOfCode(val year: Int, val day: Int) {
     open val part1: Any
@@ -124,18 +124,21 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         }
     }
 
+    /**
+     * This "overrides" kotlin.lazy with a mechanism that resets for every new input
+     */
     fun <T> lazy(input: () -> T): Lazy<T> = LocalLazyValue(input)
 
     class Sample(val input: Input, val result1: Any?, val result2: Any?, val name: String, val additionalData: Any?)
 
 
     @OptIn(ExperimentalTime::class)
-    final fun fancyRun(includeReal: Boolean = true) {
+    fun fancyRun(includeReal: Boolean = true) {
 
         fun printPart(p: Int, expected: Any?, result: () -> Any?): Boolean {
             val result = runCatching { measureTimedValue { result() } }
             print(" Part $p: ")
-            var wrong = false;
+            var wrong = false
             if (result.isSuccess) {
                 val (res, duration) = result.getOrThrow()
                 when (expected?.toString()) {
@@ -213,7 +216,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
             return
         }
         currentSample = null
-        println("Real Run:");
+        println("Real Run:")
         inputLines() // read input into cache so ApiAccess is nt part of timing data
         printPart(1, null) { part1 }
         printPart(2, null) { part2 }

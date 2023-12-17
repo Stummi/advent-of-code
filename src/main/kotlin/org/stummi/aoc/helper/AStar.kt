@@ -18,10 +18,6 @@ fun <T> astar(
     heuristicCost: (T) -> Int
 ): List<Pair<T, Int>> {
 
-    // Minimalistic debug interface :D
-    fun println(s: String) {
-    }
-
     class OpenList(initialState: T) {
         val map = mutableMapOf(initialState to 0)
         val sorted = sortedMapOf(0 to mutableSetOf(initialState))
@@ -33,6 +29,7 @@ fun <T> astar(
                 sorted.remove(v)
             }
             map.remove(ret)
+
             return ret to v
         }
 
@@ -42,16 +39,25 @@ fun <T> astar(
 
         operator fun set(p: T, value: Int) {
             val existing = map[p]
-            map[p] = value
             if (existing != null) {
-                sorted[value]!!.let {
+                sorted[existing]!!.let {
                     it.remove(p)
                     if (it.isEmpty()) {
                         sorted.remove(value)
                     }
                 }
             }
+
+            map[p] = value
             sorted.computeIfAbsent(value) { mutableSetOf() }.add(p)
+        }
+
+        private fun checkState(msg: () -> Any) {
+            val expectMap = sortedMapOf<Int, MutableSet<T>>()
+            map.forEach {  (p, value) ->
+                expectMap.computeIfAbsent(value) { mutableSetOf() }.add(p)
+            }
+            check(sorted == expectMap, msg)
         }
     }
 
@@ -65,42 +71,29 @@ fun <T> astar(
         val currentEntry =
             openList.popNext() ?: throw IllegalStateException("no more entries in openList. Maybe not solvable?")
 
-        println("current candidate: ${currentEntry.first} g=${currentEntry.second}")
-
         val currentNode = currentEntry.first
         if (goal(currentNode)) {
-            println("found target")
             target = currentNode
             break
         }
         closedList.add(currentNode)
         nextStates(currentNode).forEach { (p, cost) ->
-            println("  transition: ${p} for $cost")
             if (closedList.contains(p)) {
-                println("    (skip, in closeList)")
                 return@forEach
             }
             val ten_g = g[currentNode]!! + cost
-            println("    ten_g: $ten_g")
             if (p in openList) {
                 if (ten_g >= g[p]!!) {
-                    println("    (skip, has cheaper entry ${g[p]})")
                     return@forEach
-                } else {
-                    println("    (prev cost: ${g[p]})")
                 }
             }
-
-            println("    set pred $p -> ${currentNode to cost} (override: ${pred[p]})")
 
             pred[p] = currentNode to cost
             g[p] = ten_g
 
             val h = heuristicCost(p)
             val f = ten_g + h
-            println("    add with cost: $f")
             openList[p] = f
-            check(p in openList)
         }
     }
 

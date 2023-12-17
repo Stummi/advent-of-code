@@ -69,7 +69,7 @@ data class OperatorPacket(
 }
 
 class PacketReader(val bs: BitSet) {
-    var pos: Int = 0;
+    var pos: Int = 0
 
     private fun readHeader(): Pair<Int, Int> = readNumber(3) to readNumber(3)
 

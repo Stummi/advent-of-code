@@ -7,7 +7,7 @@ import org.stummi.aoc.helper.astar
 object Day12 : AdventOfCode(2022, 12) {
     override val part1
         get(): Int {
-            val input = inputLines();
+            val input = inputLines()
             val height = input.size
             val width = input[0].length
             val bounds = XY.ZERO until XY(width, height)
@@ -31,7 +31,7 @@ object Day12 : AdventOfCode(2022, 12) {
 
     override val part2
         get(): Int {
-            val input = inputLines();
+            val input = inputLines()
             val height = input.size
             val width = input[0].length
             val bounds = XY.ZERO until XY(width, height)

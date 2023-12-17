@@ -17,7 +17,7 @@ object Day13 : AdventOfCode(2022, 13) {
             val div2 = ListPacket(mutableListOf(ListPacket(mutableListOf(IntPacket(6)))))
             val sortedList =
                 (inputLines().filter { it.isNotEmpty() }.map { parseLine(it) } + listOf(div1, div2)).sorted()
-            return (sortedList.indexOf(div1) + 1) * (sortedList.indexOf(div2) + 1);
+            return (sortedList.indexOf(div1) + 1) * (sortedList.indexOf(div2) + 1)
         }
 
     sealed interface PacketData : Comparable<PacketData>
@@ -38,7 +38,7 @@ object Day13 : AdventOfCode(2022, 13) {
             (0 until min(data.size, other.data.size)).forEach {
                 val cmp = this.data[it].compareTo(other.data[it])
                 if (cmp != 0) {
-                    return cmp;
+                    return cmp
                 }
             }
 

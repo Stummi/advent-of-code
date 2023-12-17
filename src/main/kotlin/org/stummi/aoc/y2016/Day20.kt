@@ -29,7 +29,7 @@ object Day20 : AdventOfCode(2016, 20) {
                     if (it.first <= currentRange.last)
                         currentRange = currentRange.first..kotlin.math.max(it.last, currentRange.last)
                     else {
-                        yield(currentRange!!)
+                        yield(currentRange)
                         currentRange = it
                     }
                 }

@@ -42,7 +42,7 @@ object Day17 : AdventOfCode(2016, 17) {
     override val part2: Int
         get() {
             val states = mutableListOf(State(inputLines().first()))
-            var longestPath = 0;
+            var longestPath = 0
             while (states.isNotEmpty()) {
                 val s = states.removeFirst()
                 if (s.pos == XY(3, 3)) {

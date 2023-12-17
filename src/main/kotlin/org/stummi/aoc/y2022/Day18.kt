@@ -41,7 +41,7 @@ object Day18 : AdventOfCode(2022, 18) {
             }
 
             if (xyz in knownInside) {
-                return false;
+                return false
             }
 
             val filled = mutableSetOf<XYZ>()

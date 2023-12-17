@@ -30,12 +30,12 @@ object Day19 : AdventOfCode(2016, 19) {
         }
 
     fun elimination2(l: List<Int>): List<Int> {
-        var ret = l;
+        var ret = l
         while (ret.size > 1) {
 //            println(ret)
             ret = eliminationRound2(ret)
         }
-        return ret;
+        return ret
     }
 
     fun eliminationRound2(l: List<Int>) = sequence {

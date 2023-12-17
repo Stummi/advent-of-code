@@ -39,7 +39,7 @@ object Day10 : AdventOfCode(2015, 10) {
             }
         }
         ret.append(currentCount).append(currentChar.digitToInt())
-        return ret;
+        return ret
     }
 
 }

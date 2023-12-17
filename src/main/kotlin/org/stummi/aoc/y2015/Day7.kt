@@ -27,7 +27,7 @@ object Day7 : AdventOfCode(2015, 7) {
             }
         }
 
-        val output: String;
+        val output: String
     }
 
     data class NotOp(val input: String, override val output: String) : Gate {

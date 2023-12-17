@@ -26,7 +26,7 @@ object Day16 : AdventOfCode(2016, 16) {
     }
 
     private fun checksum(substring: String): String {
-        var ret = substring;
+        var ret = substring
         while (ret.length % 2 == 0) {
             ret = ret.chunked(2).map {
                 if (it[0] == it[1]) {
@@ -36,7 +36,7 @@ object Day16 : AdventOfCode(2016, 16) {
                 }
             }.joinToString("")
         }
-        return ret;
+        return ret
     }
 
 

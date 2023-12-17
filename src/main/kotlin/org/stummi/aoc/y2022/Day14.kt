@@ -37,16 +37,16 @@ object Day14 : AdventOfCode(2022, 14) {
             var finalPos = pos
             val bounds = this.bounds
             if (pos in tiles) {
-                return false;
+                return false
             }
             while (true) {
                 if (!part2) {
                     if (finalPos !in bounds) {
-                        return false;
+                        return false
                     }
                 } else {
                     if (finalPos.y == bounds.bottomRight.y + 1) {
-                        break;
+                        break
                     }
                 }
                 if (finalPos.down !in tiles) {
@@ -71,7 +71,7 @@ object Day14 : AdventOfCode(2022, 14) {
             while (it.addSand(XY(500, 0), false)) {
                 cnt++
             }
-            cnt;
+            cnt
         }
 
     override val part2: Int
@@ -80,7 +80,7 @@ object Day14 : AdventOfCode(2022, 14) {
             while (it.addSand(XY(500, 0), true)) {
                 cnt++
             }
-            cnt;
+            cnt
         }
 
     private fun readMap(): Game {

@@ -58,7 +58,7 @@ fun main() {
 
 fun fillAndGetBasinSize(matrix: List<MutableList<Int>>, row: Int, col: Int): Int {
     if (matrix[row][col] == 9) {
-        return 0;
+        return 0
     }
 
     matrix[row][col] = 9
@@ -78,6 +78,6 @@ fun fillAndGetBasinSize(matrix: List<MutableList<Int>>, row: Int, col: Int): Int
         ret += fillAndGetBasinSize(matrix, row, col + 1)
     }
 
-    return ret;
+    return ret
 
 }

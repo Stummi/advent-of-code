@@ -94,7 +94,7 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
 
     override fun toString() = "[$topLeft..${bottomRight}]"
 
-    fun printAsMap(mapFunc: (XY) -> Char) {
+    fun printAsMap(mapFunc: (XY) -> Any) {
         (top..bottom).forEach { y ->
             (left..right).forEach { x ->
                 print(mapFunc(XY(x, y)))

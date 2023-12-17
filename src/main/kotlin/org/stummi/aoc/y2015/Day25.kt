@@ -29,7 +29,7 @@ fun main() {
     (1..10).forEach { col ->
         print(String.format("%4s|", col))
     }
-    println();
+    println()
     println("----++-------------------------------------------------------")
     (1..40).forEach { row ->
         print(String.format("%3s ||", row))
