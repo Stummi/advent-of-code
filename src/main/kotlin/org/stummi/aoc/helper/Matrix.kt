@@ -27,14 +27,14 @@ abstract class AbstractArrayMatrix<T>(
             getByIndex(it)
         }
 
-    protected fun posToIdx(xy: XY): Int {
+    private fun posToIdx(xy: XY): Int {
         check(xy in bounds) { "$xy is out of bounds" }
         return xy.translate(bounds.topLeft.negativeValue).let {
-            xy.y * width + xy.x
+            it.y * width + it.x
         }
     }
 
-    protected fun idxToPos(idx: Int) = XY(idx % width, idx / width)
+    private fun idxToPos(idx: Int) = XY(idx % width, idx / width).translate(bounds.topLeft)
 
     fun row(r: Int) =
         bounds.xRange.asSequence().map { this[XY(it, r)] }
@@ -162,7 +162,7 @@ class CharMatrix(
     override fun rawDataHash() =
         values.contentHashCode()
 
-    fun toIntMatrix(mapFunc: (Char) -> Int = {it.digitToInt()}): IntMatrix {
+    fun toIntMatrix(mapFunc: (Char) -> Int = { it.digitToInt() }): IntMatrix {
         val ints = IntArray(values.size) {
             mapFunc(values[it])
         }
@@ -202,7 +202,3 @@ class OutOfRangeHandlingMatrix<T>(
 }
 
 fun <T> Matrix<T>.withOutOfRangeFunc(func: Matrix<T>.(xy: XY) -> T): Matrix<T> = OutOfRangeHandlingMatrix(this, func)
-
-fun main() {
-
-}

@@ -60,6 +60,8 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
     val height get() = bottom - top + 1
     val area: Int get() = width * height
 
+    val areaAsLong: Long get() = width.toLong() * height
+
 
     enum class IterationOrder(val func: XYRange.() -> Sequence<XY>) {
         TB_LR(yThenX(false, false)),
@@ -125,7 +127,6 @@ data class XYRange(val topLeft: XY, val bottomRight: XY) {
                 }.flatten()
         }
     }
-
 }
 
 fun Iterable<XY>.bounds(): XYRange {
@@ -135,15 +136,3 @@ fun Iterable<XY>.bounds(): XYRange {
     val maxY = this.maxOf { it.y }
     return XYRange(XY(minX, minY), XY(maxX, maxY))
 }
-
-
-/*
-class Matrix<K>(val w: Int, val h: Int, val data: Array<K>) {
-
-    companion object {
-        inline fun <reified K>  newMatrix(w: Int, h: Int): Matrix<K> {
-            val f = Array<K>(w * h)
-
-        }
-    }
-}*/
