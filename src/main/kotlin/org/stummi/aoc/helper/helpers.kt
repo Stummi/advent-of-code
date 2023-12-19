@@ -39,3 +39,8 @@ fun <T> Iterable<T>.partitionBy(predicate: (T) -> Boolean): List<List<T>> {
     }
     return result
 }
+
+fun String.splitToInts(): List<Int> {
+    val regex = "\\d+".toRegex()
+    return regex.findAll(this).map { it.value.toInt() }.toList()
+}
