@@ -1,3 +1,5 @@
+package org.stummi.aoc.y2021
+
 import org.stummi.aoc.AdventOfCode
 
 object Day21 : AdventOfCode(2021, 21) {

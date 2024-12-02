@@ -1,9 +1,11 @@
-import Day23.AmphPodType.A
-import Day23.AmphPodType.B
-import Day23.AmphPodType.C
-import Day23.AmphPodType.D
+package org.stummi.aoc.y2021
+
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.astar
+import org.stummi.aoc.y2021.Day23.AmphPodType.A
+import org.stummi.aoc.y2021.Day23.AmphPodType.B
+import org.stummi.aoc.y2021.Day23.AmphPodType.C
+import org.stummi.aoc.y2021.Day23.AmphPodType.D
 import kotlin.math.absoluteValue
 
 /**

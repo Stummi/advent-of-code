@@ -1,3 +1,5 @@
+package org.stummi.aoc.y2021
+
 import org.stummi.aoc.AdventOfCode
 import java.lang.Integer.min
 import kotlin.math.max

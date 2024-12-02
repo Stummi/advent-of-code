@@ -6,7 +6,6 @@ object Day1 : AdventOfCode(2023, 1) {
     override val part1: Any
         get() = inputLines().map {
             val l = it.filter { it.isDigit() }.toList()
-            assert(l.size >= 2)
             l.first().digitToInt() * 10 + l.last().digitToInt()
         }.sum()
 
@@ -39,6 +38,5 @@ object Day1 : AdventOfCode(2023, 1) {
 }
 
 fun main() {
-
     Day1.fancyRun()
 }

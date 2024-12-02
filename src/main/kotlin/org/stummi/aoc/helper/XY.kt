@@ -17,7 +17,7 @@ data class XY(
     val downLeft get() = XY(x - 1, y + 1)
     val downRight get() = XY(x + 1, y + 1)
 
-    val negativeValue get() = XY(-x, -y)
+    val negativeValue get() = -this
 
     fun move(x: Int = 0, y: Int = 0): XY {
         return XY(this.x + x, this.y + y)
@@ -37,7 +37,12 @@ data class XY(
     infix fun until(xy: XY) = this..xy.upLeft
 
     override fun toString() = "($x,$y)"
-    fun translate(move: XY) = XY(x + move.x, y + move.y)
+
+    operator fun unaryMinus() = XY(-x, -y)
+    operator fun plus(move: XY) = XY(x + move.x, y + move.y)
+    operator fun minus(move: XY) = XY(x - move.x, y - move.y)
+
+    fun translate(move: XY) = this + move
 
     companion object {
         val ZERO = XY(0, 0)

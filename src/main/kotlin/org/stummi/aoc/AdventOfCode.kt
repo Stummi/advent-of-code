@@ -72,11 +72,13 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
     }
 
     val input get() = ((currentSample?.input) ?: api)
-    fun inputLines() = input.lines
 
+    @Deprecated("use input.lines", replaceWith = ReplaceWith("input.lines"))
+    fun inputLines() = input.lines
 
     interface Input {
         val lines: List<String>
+        val line:String get() = lines.single()
         val matrix: CharMatrix get() = CharMatrix.fromLines(lines)
     }
 
@@ -239,12 +241,15 @@ fun List<AdventOfCode>.runAll() {
         futures[it to 2] = future2
     }
 
-    var totalTime = Duration.ZERO
-    var totalClockTime = Duration.ZERO
-    var maxTime = Duration.ZERO
-    lateinit var maxTimeTask: Pair<AdventOfCode, Int>
+    pool.shutdown()
 
-    var allStart = Instant.now()
+    var totalTime = Duration.ZERO
+    var maxTime = Duration.ZERO
+
+    var times = mutableMapOf<Pair<AdventOfCode, Int>, Duration>()
+
+    val allStart = Instant.now()
+
     forEach {
 //        it.input() // read input into cache so ApiAccess is nt part of timing data
         print(String.format("%10s", "${it.year}/${it.day}"))
@@ -284,20 +289,17 @@ fun List<AdventOfCode>.runAll() {
         totalTime += t1
         totalTime += t2
 
-        if (t1 > maxTime) {
-            maxTime = t1
-            maxTimeTask = it to 1
-        }
-
-        if (t2 > maxTime) {
-            maxTime = t2
-            maxTimeTask = it to 2
-        }
+        times[it to 1] = t1
+        times[it to 2] = t2
 
         println()
     }
     var allEnd = Instant.now()!!
     println("Clock Time: ${java.time.Duration.between(allStart, allEnd).toKotlinDuration()}")
     println("Total Time: $totalTime")
-    println("Max Time: $maxTime - ${maxTimeTask.first.year}/${maxTimeTask.first.day} pt ${maxTimeTask.second}")
+    println()
+    println("Max Times:")
+    times.entries.sortedByDescending { it.value }.take(5).forEach { (k, v) ->
+        println("${k.first.year}/${k.first.day} pt ${k.second} - $v");
+    }
 }

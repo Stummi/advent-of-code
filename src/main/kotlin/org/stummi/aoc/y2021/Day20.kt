@@ -1,3 +1,5 @@
+package org.stummi.aoc.y2021
+
 import org.stummi.aoc.AdventOfCode
 import org.stummi.aoc.helper.IntMatrix
 import org.stummi.aoc.helper.Matrix

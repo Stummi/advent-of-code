@@ -1,4 +1,7 @@
+package org.stummi.aoc.y2021
+
 import org.stummi.aoc.AdventOfCode
+import org.stummi.aoc.helper.tuplePermutations
 import kotlin.math.absoluteValue
 
 object Day19 : AdventOfCode(2021, 19) {
@@ -125,24 +128,20 @@ object Day19 : AdventOfCode(2021, 19) {
             l.asSequence().mapIndexed { i2, p -> (i1 to i2) to p }
         }
 
-
     }
 
 
     override val part1: Int
-        get() = solve().signals.size
+        get() = solve.signals.size
 
 
     override val part2: Int
-        get() {
-            val map = solve()
+        get() =
+            solve.beacons.tuplePermutations(false).maxOf { (a, b) ->
+                a.pos.manhattenDistanceTo(b.pos)
+            }
 
-            return map.beacons.flatMap { a ->
-                map.beacons.map { b -> a.pos.manhattenDistanceTo(b.pos) }
-            }.maxOrNull()!!
-        }
-
-    private fun solve(): SignalMap {
+    val solve: SignalMap by lazy {
         var starMaps = inputData.toSet()
 
         var it = 0
@@ -165,7 +164,7 @@ object Day19 : AdventOfCode(2021, 19) {
             }
             starMaps = nextMap
         }
-        return starMaps.single()
+        starMaps.single()
     }
 
     internal fun findMatch(signalMap: SignalMap, candidates: Set<SignalMap>): SignalMap? {
