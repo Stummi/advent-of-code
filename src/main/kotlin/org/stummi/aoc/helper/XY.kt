@@ -19,6 +19,9 @@ data class XY(
 
     val negativeValue get() = -this
 
+    val rotateRight get() = XY(-y, x)
+    val rotateLeft get() = XY(y, -x)
+
     fun move(x: Int = 0, y: Int = 0): XY {
         return XY(this.x + x, this.y + y)
     }

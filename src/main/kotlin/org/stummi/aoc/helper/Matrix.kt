@@ -1,5 +1,6 @@
 package org.stummi.aoc.helper
 
+import java.math.BigInteger
 import java.util.BitSet
 import java.util.Objects
 
@@ -14,6 +15,10 @@ interface Matrix<T> {
     val allValues: Sequence<T>
     val width: Int get() = bounds.width
     val height: Int get() = bounds.height
+
+    fun print(f: (T) -> Any) {
+        bounds.printAsMap { f(get(it)) }
+    }
 }
 
 abstract class AbstractArrayMatrix<T>(
@@ -186,7 +191,11 @@ class BoolMatrix(
     override fun rawDataObject(): Any = values
     override fun clone() = BoolMatrix(bounds, values.clone() as BitSet)
 
+    fun print() {
+        super.print { if(it) '#' else '.' }
+    }
 }
+
 
 class OutOfRangeHandlingMatrix<T>(
     private val delegate: Matrix<T>,

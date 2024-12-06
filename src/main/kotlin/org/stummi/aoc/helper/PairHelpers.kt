@@ -16,3 +16,5 @@ fun <X, Y : Comparable<Y>> Pair<X, X>.sortedBy(func: (X) -> Y) =
     if (func(this.first) > func(this.second)) this.swap() else this
 
 fun <X, Y> Pair<X, X>.map(func: (X) -> Y) = func(first) to func(second)
+
+fun <T> List<T>.toPair() = this.component1() to this.component2()

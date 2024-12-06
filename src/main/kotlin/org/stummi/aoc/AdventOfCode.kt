@@ -66,7 +66,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
 
     private fun shorten(input: String) = input.takeIf { it.length < 15 } ?: (input.substring(0, 12) + "...")
 
-    fun resourceSample(input: String, result1: Any? = null, result2: Any? = null, additionalData: Any? = null) {
+    fun resourceSample(input: String = "demo", result1: Any? = null, result2: Any? = null, additionalData: Any? = null) {
         samples.removeIf { it.input is Resource && it.input.name == input }
         samples.add(Sample(Resource(input), result1, result2, "<${shorten(input)}>", additionalData))
     }
@@ -83,7 +83,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
     }
 
     data class Raw(val s: String) : Input {
-        override val lines get() = listOf(s)
+        override val lines get() = s.split("\n")
         override fun toString() = s
     }
 
@@ -279,6 +279,7 @@ fun List<AdventOfCode>.runAll() {
                         if (it.length > 30) it.substring(0, 27) + "..." else it
                     })
             )
+            p.exceptionOrNull()?.printStackTrace()
         }
 
         val (p1, t1) = futures[it to 1]!!.get()
