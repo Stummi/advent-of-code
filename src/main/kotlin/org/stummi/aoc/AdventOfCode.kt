@@ -279,7 +279,6 @@ fun List<AdventOfCode>.runAll() {
                         if (it.length > 30) it.substring(0, 27) + "..." else it
                     })
             )
-            p.exceptionOrNull()?.printStackTrace()
         }
 
         val (p1, t1) = futures[it to 1]!!.get()

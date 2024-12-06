@@ -5,6 +5,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.*
 
 object AocApi {
     val session by lazy { File("cookie").readText().trim() }
@@ -22,6 +23,11 @@ object AocApi {
     }
 
     private fun readFromApi(year: Int, day: Int): List<String> {
+        val availableFrom = LocalDate.of(year, 12, day).atTime(5, 0).atZone(ZoneOffset.UTC)
+        if (ZonedDateTime.now().isBefore(availableFrom)) {
+            throw Exception("Input for $year/$day is not available yet")
+        }
+
         val url = URL("https://adventofcode.com/$year/day/$day/input")
         val connection = url.openConnection() as HttpURLConnection
         connection.addRequestProperty("Cookie", "session=$session")
