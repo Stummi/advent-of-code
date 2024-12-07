@@ -33,12 +33,20 @@ object Day7 : AdventOfCode(2024, 7) {
             }
 
             if(part2 &&
-                checkSolve("$current${numbers[0]}".toLong(), subList, part2)
+                checkSolve(concat(current, numbers[0]), subList, part2)
             ) {
                 return true
             }
 
             return false
+        }
+
+        private fun concat(n1: Long, n2: Long): Long {
+            var a = 10
+            while(n2 >= a) {
+                a*=10
+            }
+            return n1 * a + n2
         }
     }
 
