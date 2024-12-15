@@ -8,8 +8,9 @@ import org.stummi.aoc.helper.partitionBy
 object Day15 : AdventOfCode(2024, 15) {
 
     init {
+        resourceSample("demo", result1 = 2028)
         resourceSample("demo_2")
-        resourceSample("demo_3")
+        resourceSample("demo_3", result1 = 10092, result2 = 9021)
     }
 
     private data class State(
@@ -17,21 +18,14 @@ object Day15 : AdventOfCode(2024, 15) {
         val map: CharMatrix,
     ) {
         fun moveRobot(direction: XY) {
-            if (moveTile(robot, direction)) {
+            if (canMoveTile(robot, direction)) {
+                moveTile(robot, direction)
                 map[robot] = '.'
                 robot += direction
             }
         }
 
-        fun moveRobotPt2(direction: XY) {
-            if (canMoveTilePt2(robot, direction)) {
-                moveTilePt2(robot, direction)
-                map[robot] = '.'
-                robot += direction
-            }
-        }
-
-        private fun canMoveTilePt2(
+        private fun canMoveTile(
             pos: XY,
             dir: XY,
         ): Boolean {
@@ -39,55 +33,38 @@ object Day15 : AdventOfCode(2024, 15) {
                 '#' -> false
                 '.' -> true
                 '[' -> {
-                    canMoveTilePt2(pos + dir, dir) &&
-                            (dir == XY.ZERO.left || canMoveTilePt2((pos + dir).right, dir))
+                    canMoveTile(pos + dir, dir) &&
+                            (dir == XY.ZERO.left || canMoveTile((pos + dir).right, dir))
                 }
 
                 ']' -> {
-                    canMoveTilePt2(pos + dir, dir) &&
-                            (dir == XY.ZERO.right || canMoveTilePt2((pos + dir).left, dir))
+                    canMoveTile(pos + dir, dir) &&
+                            (dir == XY.ZERO.right || canMoveTile((pos + dir).left, dir))
+                }
+
+                'O' -> {
+                    canMoveTile(pos + dir, dir)
                 }
 
                 else -> error(map[pos + dir])
             }
         }
 
-        private fun moveTilePt2(pos: XY, dir: XY, neighbours: Boolean = true) {
+        private fun moveTile(pos: XY, dir: XY, neighbours: Boolean = true) {
             if (neighbours) {
                 when (map[pos]) {
-                    '[' -> moveTilePt2(pos.right, dir, false)
-                    ']' -> moveTilePt2(pos.left, dir, false)
+                    '[' -> moveTile(pos.right, dir, false)
+                    ']' -> moveTile(pos.left, dir, false)
                 }
             }
 
             when (map[pos + dir]) {
                 '#' -> error("wall")
-                '[', ']' -> moveTilePt2(pos + dir, dir)
+                '[', ']', 'O' -> moveTile(pos + dir, dir)
             }
 
             map[pos + dir] = map[pos]
             map[pos] = '.'
-        }
-
-        private fun moveTile(pos: XY, dir: XY): Boolean {
-            when (map[pos + dir]) {
-                '#' -> return false
-                'O' -> {
-                    if (moveTile(pos + dir, dir)) {
-                        map[pos + dir] = map[pos]
-                        return true
-                    } else {
-                        return false
-                    }
-                }
-
-                '.' -> {
-                    map[pos + dir] = map[pos]
-                    return true
-                }
-
-                else -> error(map[pos + dir])
-            }
         }
     }
 
@@ -95,24 +72,15 @@ object Day15 : AdventOfCode(2024, 15) {
         get() {
             val (m, moves) = input.lines.partitionBy { it.isEmpty() }
             val map = CharMatrix.fromLines(m)
-            val robot = map.find('@')
-            val state = State(robot, map)
-
-            moves.joinToString("").forEach {
-                val dir = when (it) {
-                    '^' -> XY.ZERO.up
-                    '>' -> XY.ZERO.right
-                    '<' -> XY.ZERO.left
-                    'v' -> XY.ZERO.down
-                    else -> error(it)
-                }
-                state.moveRobot(dir)
-            }
-
-            return state.map.findAll('O').sumOf {
-                it.x + 100 * it.y
-            }
+            applyMoves(map, moves)
+            return calculateResult(map, 'O')
         }
+
+    private fun calculateResult(map: CharMatrix, c: Char): Int {
+        return map.findAll(c).sumOf {
+            it.x + 100 * it.y
+        }
+    }
 
     override val part2: Any
         get() {
@@ -131,24 +99,28 @@ object Day15 : AdventOfCode(2024, 15) {
                 CharMatrix.fromLines(it)
             }
 
-            val robot = map.find('@')
-            val state = State(robot, map)
-
-            moves.joinToString("").forEach {
-                val dir = when (it) {
-                    '^' -> XY.ZERO.up
-                    '>' -> XY.ZERO.right
-                    '<' -> XY.ZERO.left
-                    'v' -> XY.ZERO.down
-                    else -> error(it)
-                }
-                state.moveRobotPt2(dir)
-            }
-
-            return state.map.findAll('[').sumOf {
-                it.x + 100 * it.y
-            }
+            applyMoves(map, moves)
+            return calculateResult(map, '[')
         }
+
+    private fun applyMoves(
+        map: CharMatrix,
+        moves: List<String>
+    ) {
+        val robot = map.find('@')
+        val state = State(robot, map)
+
+        moves.joinToString("").forEach {
+            val dir = when (it) {
+                '^' -> XY.ZERO.up
+                '>' -> XY.ZERO.right
+                '<' -> XY.ZERO.left
+                'v' -> XY.ZERO.down
+                else -> error(it)
+            }
+            state.moveRobot(dir)
+        }
+    }
 }
 
 fun main() {
