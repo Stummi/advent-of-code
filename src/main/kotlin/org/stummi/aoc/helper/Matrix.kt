@@ -174,7 +174,6 @@ class CharMatrix(
 
         return IntMatrix(bounds, ints)
     }
-
 }
 
 class BoolMatrix(

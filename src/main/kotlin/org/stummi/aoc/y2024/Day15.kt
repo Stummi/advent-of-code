@@ -10,7 +10,7 @@ object Day15 : AdventOfCode(2024, 15) {
     init {
         resourceSample("demo", result1 = 2028)
         resourceSample("demo_2")
-        resourceSample("demo_3", result1 = 10092, result2 = 9021)
+        resourceSample("demo_3", result1 = 10092, result2 = 9021 )
     }
 
     private data class State(

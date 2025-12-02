@@ -135,7 +135,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
 
 
     @OptIn(ExperimentalTime::class)
-    fun fancyRun(includeReal: Boolean = true) {
+    fun fancyRun(includeDemo: Boolean = true, includeReal: Boolean = true) {
 
         fun printPart(p: Int, expected: Any?, result: () -> Any?): Boolean {
             val result = runCatching { measureTimedValue { result() } }
@@ -198,7 +198,7 @@ abstract class AdventOfCode(val year: Int, val day: Int) {
         println()
         var samplesPass1 = true
         var samplesPass2 = true
-        if (samples.isEmpty()) {
+        if (samples.isEmpty() || !includeDemo) {
             println("No Samples")
             println("----")
         } else {

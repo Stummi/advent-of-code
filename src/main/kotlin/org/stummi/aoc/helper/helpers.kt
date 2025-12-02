@@ -40,7 +40,10 @@ fun <T> Iterable<T>.partitionBy(predicate: (T) -> Boolean): List<List<T>> {
     return result
 }
 
-fun String.splitToInts(): List<Int> {
-    val regex = "\\d+".toRegex()
+fun String.splitToInts(includeNegative: Boolean = false): List<Int> {
+    val regex = if(includeNegative)
+        "-?\\d+".toRegex()
+    else
+        "\\d+".toRegex()
     return regex.findAll(this).map { it.value.toInt() }.toList()
 }

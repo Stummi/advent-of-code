@@ -1,5 +1,58 @@
 package org.stummi.aoc.helper
 
+
+class OpenList<T>(initialState: T) {
+    val map = mutableMapOf(initialState to 0)
+    val sorted = sortedMapOf(0 to mutableSetOf(initialState))
+
+    fun popNext(): Pair<T, Int>? {
+        checkState()
+        val (v, list) = sorted.asSequence().firstOrNull() ?: return null
+        val ret = list.first().also { list.remove(it) }
+        if (list.isEmpty()) {
+            sorted.remove(v)
+        }
+        map.remove(ret)
+
+        return ret to v
+    }
+
+    private fun checkState() {
+        val sortedSize = sorted.entries.sumOf { it.value.size }
+        check(map.size == sortedSize) {
+            "mapSize[${map.size}] != sortedSize[$sortedSize]"
+        }
+    }
+
+    operator fun get(p: T): Int? = map[p]
+
+    operator fun contains(p: T) = p in map
+
+    operator fun set(p: T, value: Int) {
+        val existing = map[p]
+        if (existing != null) {
+            sorted[existing]!!.let {
+                it.remove(p)
+                if (it.isEmpty()) {
+                    sorted.remove(existing)
+                }
+            }
+        }
+
+        map[p] = value
+        sorted.computeIfAbsent(value) { mutableSetOf() }.add(p)
+    }
+
+    private fun checkState(msg: () -> Any) {
+        val expectMap = sortedMapOf<Int, MutableSet<T>>()
+        map.forEach {  (p, value) ->
+            expectMap.computeIfAbsent(value) { mutableSetOf() }.add(p)
+        }
+        check(sorted == expectMap, msg)
+    }
+}
+
+
 /**
  * generic A* implementation
  *
@@ -17,49 +70,6 @@ fun <T> astar(
     goal: (T) -> Boolean,
     heuristicCost: (T) -> Int
 ): List<Pair<T, Int>> {
-
-    class OpenList(initialState: T) {
-        val map = mutableMapOf(initialState to 0)
-        val sorted = sortedMapOf(0 to mutableSetOf(initialState))
-
-        fun popNext(): Pair<T, Int>? {
-            val (v, list) = sorted.asSequence().firstOrNull() ?: return null
-            val ret = list.first().also { list.remove(it) }
-            if (list.isEmpty()) {
-                sorted.remove(v)
-            }
-            map.remove(ret)
-
-            return ret to v
-        }
-
-        operator fun get(p: T): Int? = map[p]
-
-        operator fun contains(p: T) = p in map
-
-        operator fun set(p: T, value: Int) {
-            val existing = map[p]
-            if (existing != null) {
-                sorted[existing]!!.let {
-                    it.remove(p)
-                    if (it.isEmpty()) {
-                        sorted.remove(value)
-                    }
-                }
-            }
-
-            map[p] = value
-            sorted.computeIfAbsent(value) { mutableSetOf() }.add(p)
-        }
-
-        private fun checkState(msg: () -> Any) {
-            val expectMap = sortedMapOf<Int, MutableSet<T>>()
-            map.forEach {  (p, value) ->
-                expectMap.computeIfAbsent(value) { mutableSetOf() }.add(p)
-            }
-            check(sorted == expectMap, msg)
-        }
-    }
 
     val openList = OpenList(initialState)
     val closedList = mutableSetOf<T>()
