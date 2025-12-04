@@ -5,6 +5,9 @@ import org.stummi.aoc.helper.map
 import kotlin.math.absoluteValue
 
 object Day2 : AdventOfCode(2025, 2) {
+    init {
+        resourceSample(result1 = 13)
+    }
     override val part1: Any
         get() {
             return parsedInput().flatten().filterNot {
@@ -24,7 +27,7 @@ object Day2 : AdventOfCode(2025, 2) {
                 (1..str.length / 2).filter { str.length % it == 0 }.none {
                     str.chunked(it).distinct().size == 1
                 }
-            }.sum()
+            }.onEach { println(it) }.sum()
         }
 
     private fun parsedInput() =
